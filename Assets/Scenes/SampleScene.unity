@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 259066435}
   - component: {fileID: 259066434}
   - component: {fileID: 259066433}
+  - component: {fileID: 259066437}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -228,6 +229,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &259066437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259066432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2467cfd0373c48d438e115f8e64d9ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  car: {fileID: 1699616235}
 --- !u!1001 &295709012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -759,10 +773,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 82595974964308326, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82595974964308326, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 18e7e790eaa8af147ace008ced891516, type: 3}
+    - target: {fileID: 114082785044724900, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1969584304144926, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1699616236}
+    - targetCorrespondingSourceObject: {fileID: 1969584304144926, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1699616235}
   m_SourcePrefab: {fileID: 100100000, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
 --- !u!1001 &1119737363
 PrefabInstance:
@@ -833,6 +865,7 @@ GameObject:
   - component: {fileID: 1666056952}
   - component: {fileID: 1666056951}
   - component: {fileID: 1666056950}
+  - component: {fileID: 1666056954}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -927,6 +960,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1666056954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666056949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2467cfd0373c48d438e115f8e64d9ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  car: {fileID: 1699616235}
+--- !u!1 &1699616229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1969584304144926, guid: 52dce0384a160774aa85791275a8dcd4, type: 3}
+  m_PrefabInstance: {fileID: 1050020412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1699616235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699616229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e9005ff2e22184bb364f39ba37a2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1699616236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699616229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3b10584d4c873488e4b8453c139c8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

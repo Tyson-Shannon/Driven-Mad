@@ -61,12 +61,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Camera\CameraFreeLook.cs" />
+    <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Car\DoubleTransformObject.cs" />
+    <Compile Include="Assets\Scripts\Car Strategies\CarStrategyInterfaces.cs" />
+    <Compile Include="Assets\Scripts\MuscleCarSetUp.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Camera\CameraClass.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Camera\CameraTarget.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Car\Trailer.cs" />
+    <Compile Include="Assets\Scripts\RoadScroll.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Camera\SetCamera.cs" />
     <Compile Include="Assets\Sprites\PainterCars\Scripts\Car\CarInputController.cs" />
+    <Compile Include="Assets\Scripts\Car Strategies\MuscleCarDrive.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Sprites\Rusty Vehicles\CullOffAlpha.shader" />
