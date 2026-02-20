@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/LevelSelector.unity
+    guid: af2dd62521218e146ae7883ee2b9fcc0
+  - enabled: 1
+    path: Assets/Scenes/BasicCar.unity
+    guid: 639e646fb1f476146860a5fc54003776
+  - enabled: 1
+    path: Assets/Scenes/MuscleCar.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Van.unity
+    guid: a1e96072194d1a2439776a4a03a5deed
+  - enabled: 1
+    path: Assets/Scenes/SemiTruck.unity
+    guid: 1c6e7ebef175abb4c87911776487b0b3
   m_configObjects: {}
