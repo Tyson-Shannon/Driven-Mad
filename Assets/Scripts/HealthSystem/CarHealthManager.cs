@@ -34,18 +34,18 @@ public class CarHealthManager : MonoBehaviour
         }
         else if (GetComponent<MuscleCarSetUp>() != null)
         {
-            healthSystem = new ArmoredHealth(150);
-            Debug.Log("MuscleCar initialized - 150 HP, 50% damage reduction");
+            healthSystem = new ArmoredHealth(75);
+            Debug.Log("MuscleCar initialized - 75 HP, 50% damage reduction");
         }
         else if (GetComponent<SemiTruckSetUp>() != null)
         {
-            healthSystem = new ArmoredHealth(200);
-            Debug.Log("SemiTruck initialized - 200 HP, 50% damage reduction");
+            healthSystem = new ArmoredHealth(150);
+            Debug.Log("SemiTruck initialized - 150 HP, 50% damage reduction");
         }
         else if (GetComponent<VanSetUp>() != null)
         {
-            healthSystem = new FastCarHealth(80);
-            Debug.Log("Van initialized - 80 HP, 25% increased damage taken");
+            healthSystem = new FastCarHealth(50);
+            Debug.Log("Van initialized - 50 HP, 25% increased damage taken");
         }
         else
         {
