@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using System.Collections;
 
 public class CarHealthManager : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class CarHealthManager : MonoBehaviour
     // STRATEGY PATTERN 
     private IHealthSystem healthSystem;
 
+    // Blood overlay - stored so we never lose track of it
+    private Sprite bloodSplash;
+    private GameObject damageOverlay;
+    private bool isDead = false; // prevents fading after death
+
     public enum DamageSource
     {
         Zombie,
@@ -20,13 +26,16 @@ public class CarHealthManager : MonoBehaviour
 
     void Start()
     {
+        // Load blood sprite from Resources folder
+        bloodSplash = Resources.Load<Sprite>("blood");
+        Debug.Log("Loaded sprite: " + bloodSplash);
+
         InitializeHealthSystem();
     }
 
     void InitializeHealthSystem()
     {
-        // STRATEGY PATTERN Detect car type and assign appropriate health strategy
-
+        // STRATEGY PATTERN - detect car type and assign health strategy
         if (GetComponent<BasicCarSetUp>() != null)
         {
             healthSystem = new StandardHealth(100);
@@ -54,20 +63,27 @@ public class CarHealthManager : MonoBehaviour
             Debug.LogWarning("No car SetUp script detected - using default StandardHealth (100 HP)");
         }
 
-        // OBSERVER PATTERN Notify listeners of initial health
+        // OBSERVER PATTERN - notify listeners of initial health
         OnHealthChanged?.Invoke(healthSystem.CurrentHealth, healthSystem.MaxHealth);
     }
 
-
     public void TakeDamage(int damage, DamageSource source = DamageSource.Unknown)
     {
-        if (!healthSystem.IsAlive) return; // Already dead, ignore damage
+        // Already dead, ignore damage
+        if (!healthSystem.IsAlive) return;
 
         healthSystem.TakeDamage(damage);
 
-        // OBSERVER PATTERN Notification
+        // OBSERVER PATTERN - notify listeners of health change
         OnHealthChanged?.Invoke(healthSystem.CurrentHealth, healthSystem.MaxHealth);
 
+        // Show blood and start fade (only if not dead)
+        if (healthSystem.IsAlive)
+        {
+            ShowBlood();
+            StopAllCoroutines();
+            StartCoroutine(FadeBloodOut());
+        }
 
         if (!healthSystem.IsAlive)
         {
@@ -75,16 +91,18 @@ public class CarHealthManager : MonoBehaviour
         }
     }
 
-
     public void Repair(int amount)
     {
         healthSystem.Repair(amount);
 
         OnHealthChanged?.Invoke(healthSystem.CurrentHealth, healthSystem.MaxHealth);
+
+        // Fade blood away when healed
+        StartCoroutine(FadeBloodOut());
     }
+
     public void ActivateShield(int shieldAmount)
     {
-
         int currentHealth = healthSystem.CurrentHealth;
         int maxHealth = healthSystem.MaxHealth;
 
@@ -99,9 +117,15 @@ public class CarHealthManager : MonoBehaviour
     {
         Debug.Log($"=== CAR DESTROYED by {source}! ===");
 
+        isDead = true; // mark as dead so blood doesn't fade
+
+        StopAllCoroutines();
         OnCarDestroyed?.Invoke(source);
 
-        // Visual feedback and disable car
+        // Show blood permanently on death
+        ShowBlood();
+
+        // Disable car
         DisableCar();
 
         // Show game over after 1 second delay
@@ -110,7 +134,7 @@ public class CarHealthManager : MonoBehaviour
 
     void DisableCar()
     {
-        // Disable car movement (your teammate's CarController)
+        // Disable car movement
         CarController carController = GetComponent<CarController>();
         if (carController != null)
         {
@@ -118,50 +142,77 @@ public class CarHealthManager : MonoBehaviour
             Debug.Log("Car controller disabled");
         }
 
-        // Flash screen red to indicate damage/death
-        FlashScreenRed();
-
-        Debug.Log("Car disabled - screen flashed red");
+        Debug.Log("Car disabled");
     }
 
-    void FlashScreenRed()
+    void ShowBlood()
     {
-        // Find or create a red overlay UI
-        GameObject overlay = GameObject.Find("DamageOverlay");
-
-        if (overlay == null)
+        // If overlay doesn't exist yet, create it once
+        if (damageOverlay == null)
         {
-            // Create red overlay if it doesn't exist
-            overlay = new GameObject("DamageOverlay");
-            Canvas canvas = overlay.AddComponent<Canvas>();
+            // Create overlay container
+            damageOverlay = new GameObject("DamageOverlay");
+
+            // Add canvas so Unity treats this as UI
+            Canvas canvas = damageOverlay.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 1000; // Make sure it's on top
+            canvas.sortingOrder = 1000; // renders on top of everything
 
-            UnityEngine.UI.Image redImage = overlay.AddComponent<UnityEngine.UI.Image>();
-            redImage.color = new Color(1f, 0f, 0f, 0.5f); // Red with 50% transparency
+            // Add image and assign blood sprite
+            UnityEngine.UI.Image bloodImage = damageOverlay.AddComponent<UnityEngine.UI.Image>();
+            bloodImage.sprite = bloodSplash;
+            bloodImage.color = new Color(1f, 1f, 1f, 0.8f);
 
-            RectTransform rectTransform = overlay.GetComponent<RectTransform>();
-            rectTransform.anchorMin = Vector2.zero;
-            rectTransform.anchorMax = Vector2.one;
-            rectTransform.offsetMin = Vector2.zero;
-            rectTransform.offsetMax = Vector2.zero;
-
-            Debug.Log("Created red damage overlay");
+            // Stretch image to fill entire screen
+            RectTransform rect = damageOverlay.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
         }
         else
         {
-            // If it already exists, just make sure it's visible
-            overlay.SetActive(true);
+            // Overlay exists, turn it on and reset transparency
+            damageOverlay.SetActive(true);
+            UnityEngine.UI.Image img = damageOverlay.GetComponent<UnityEngine.UI.Image>();
+            if (img != null) img.color = new Color(1f, 1f, 1f, 0.8f);
         }
     }
+
+    IEnumerator FadeBloodOut()
+    {
+        // Wait 1 second before fading
+        yield return new WaitForSeconds(1f);
+
+        // If car died during wait, don't fade - keep blood on screen
+        if (isDead) yield break;
+
+        // If overlay doesn't exist stop coroutine
+        if (damageOverlay == null) yield break;
+
+        // Get image component to change transparency
+        UnityEngine.UI.Image img = damageOverlay.GetComponent<UnityEngine.UI.Image>();
+        if (img == null) yield break;
+
+        // Slowly reduce transparency every frame
+        float alpha = 0.8f;
+        while (alpha > 0f)
+        {
+            alpha -= Time.deltaTime * 0.5f;
+            img.color = new Color(1f, 1f, 1f, alpha);
+            yield return null; // wait one frame then continue
+        }
+
+        // Fully faded, hide overlay
+        damageOverlay.SetActive(false);
+    }
+
     void ShowGameOver()
     {
         Debug.Log("=== GAME OVER ===");
-        // TODO:  add game over UI here
-        // TODO: Display final score from ScoreManager
-        // For now, just log to console
+        // TODO: add game over UI here
+        // TODO: display final score from ScoreManager
     }
-
 
     public int GetCurrentHealth() => healthSystem.CurrentHealth;
     public int GetMaxHealth() => healthSystem.MaxHealth;
