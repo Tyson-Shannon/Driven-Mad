@@ -17,7 +17,7 @@ public class SemiTruckSteer : IDrivingSteerStrategy
 {
     public float GetDriveSteer()
     {
-        return 0.4f;
+        return 0.3f;
     }
 
 }
