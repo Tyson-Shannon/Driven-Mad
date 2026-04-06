@@ -674,6 +674,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TruckAndTrailer
       objectReference: {fileID: 0}
+    - target: {fileID: 1095311937047122, guid: 624fb93955aae9d44b88ab6948fb3afe, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4565041901416212, guid: 624fb93955aae9d44b88ab6948fb3afe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.49

@@ -25,15 +25,10 @@ public class RoadScroll : MonoBehaviour
         rend = GetComponent<Renderer>();
     }
 
-    void Start()
-    {
-        //get speed to move road from car type
-        carSpeed = car.GetSpeed();
-    }
-
     // Update is called once per frame
     void Update()
     {
+        carSpeed = car.GetSpeed();
         //add time since last update
         timer += Time.deltaTime;
         //specified time has passed to increase speed
