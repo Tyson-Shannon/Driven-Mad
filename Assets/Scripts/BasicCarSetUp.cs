@@ -14,5 +14,11 @@ public class BasicCarSetUp : MonoBehaviour
         IDrivingSteerStrategy driveSteer = new BasicCarSteer();
 
         car.Initialize(driveSpeed, driveSteer);
+
+        // Barry - auto attach health manager
+        if (GetComponent<CarHealthManager>() == null)
+        {
+            gameObject.AddComponent<CarHealthManager>();
+        }
     }
 }
