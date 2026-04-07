@@ -916,6 +916,14 @@ PrefabInstance:
       propertyPath: factory
       value: 
       objectReference: {fileID: 1338641133}
+    - target: {fileID: 6492229141497444944, guid: c8d09eaabfff9944dab8d8feb8f22dad, type: 3}
+      propertyPath: boostAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492229141497444944, guid: c8d09eaabfff9944dab8d8feb8f22dad, type: 3}
+      propertyPath: boostDuration
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

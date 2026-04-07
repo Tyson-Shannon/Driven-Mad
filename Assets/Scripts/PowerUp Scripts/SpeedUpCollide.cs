@@ -11,7 +11,7 @@ public class SpeedUpCollide : MonoBehaviour
     [SerializeField] private PowerUpFactory factory;
 
     [SerializeField] private float boostAmount = 1f;
-    [SerializeField] private float boostDuration = 1f;
+    [SerializeField] private float boostDuration = 5f;
 
     private bool isCollected = false;//makes sure powerup isn't triggered more than once per life
 

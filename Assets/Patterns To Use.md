@@ -31,9 +31,9 @@ Singleton: Spawning -Nathan TBD
 Powerup Patterns:
 Factory: to create them (Coded)
 Pooling: to load them in list (Coded)
-Decorator: speedup to car
+Decorator: speedup to car (Coded)
 Visitor: shield
-Observer: Zombie Repel
+Observer and State: Zombie Repel
 
 Powerups:
 * Speed Up

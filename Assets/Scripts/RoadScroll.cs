@@ -35,7 +35,7 @@ public class RoadScroll : MonoBehaviour
         if (timer >= speedDelay)
         {
             timer = 0f;
-            carSpeed = carSpeed + speedIncrement;
+            car.UpdateSpeed(speedIncrement);
         }
 
         //get ammount to offset texture times framerate
