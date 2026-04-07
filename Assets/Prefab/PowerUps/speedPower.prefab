@@ -4993,8 +4993,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factory: {fileID: 0}
-  boostAmount: 2
-  boostDuration: 60
+  boostAmount: 1
+  boostDuration: 5
 --- !u!54 &2583915101245107575
 Rigidbody:
   m_ObjectHideFlags: 0

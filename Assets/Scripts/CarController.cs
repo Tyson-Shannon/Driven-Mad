@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -17,6 +18,7 @@ public class CarController : MonoBehaviour
         this.steerStrategy = steerStrategy;
 
         steerAmount = steerStrategy.GetDriveSteer();
+        speed = driveStrategy.GetDriveSpeed();
     }
 
     void Update()
@@ -39,8 +41,12 @@ public class CarController : MonoBehaviour
     public float GetSpeed()
     {
         //called by RoadScroll
-        speed = driveStrategy.GetDriveSpeed();
         return speed;
+    }
+
+    public void UpdateSpeed(float incr)
+    {
+        speed = speed + incr;
     }
 
     //SpeedUp PowerUp--
@@ -52,13 +58,16 @@ public class CarController : MonoBehaviour
     private IEnumerator SpeedUpRoutine(float boostAmount, float duration)
     {
         IDrivingSpeedStrategy original = driveStrategy;
+        float originalSpeed = speed;
 
         //wrap with decorator
         driveStrategy = new SpeedUpDecorator(original, boostAmount);
+        speed = driveStrategy.GetDriveSpeed();
 
         yield return new WaitForSeconds(duration);
 
         //revert back
         driveStrategy = original;
+        speed = originalSpeed;
     }
 }
