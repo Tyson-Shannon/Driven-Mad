@@ -107,6 +107,39 @@ public class FastCarHealth : IHealthSystem
     }
 }
 
+
+public class VanCarHealth : IHealthSystem
+{
+    private int currentHealth;
+    private int maxHealth;
+    private float damageMultiplier = 1f; 
+
+    public int CurrentHealth => currentHealth;
+    public int MaxHealth => maxHealth;
+    public bool IsAlive => currentHealth > 0;
+
+    public VanCarHealth(int maxHealth)
+    {
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int increasedDamage = Mathf.RoundToInt(damage * damageMultiplier);
+        currentHealth -= increasedDamage;
+        if (currentHealth < 0) currentHealth = 0;
+        Debug.Log($" Van took {damage}. Health: {currentHealth}/{maxHealth}");
+    }
+
+    public void Repair(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+        Debug.Log($"Repaired {amount}. Health: {currentHealth}/{maxHealth}");
+    }
+}
+
 // SHIELD HEALTH 
 public class ShieldHealth : IHealthSystem
 {

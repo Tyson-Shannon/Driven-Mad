@@ -12,7 +12,7 @@ public class CarHealthManager : MonoBehaviour
     // STRATEGY PATTERN 
     private IHealthSystem healthSystem;
 
-    // Blood overlay - stored so we never lose track of it
+    // Blood overlay 
     private Sprite bloodSplash;
     private GameObject damageOverlay;
     private bool isDead = false; // prevents fading after death
@@ -53,8 +53,8 @@ public class CarHealthManager : MonoBehaviour
         }
         else if (GetComponent<VanSetUp>() != null)
         {
-            healthSystem = new FastCarHealth(50);
-            Debug.Log("Van initialized - 50 HP, 25% increased damage taken");
+            healthSystem = new VanCarHealth(110);
+            Debug.Log("Van initialized - 110 HP, normal damage");
         }
         else
         {
