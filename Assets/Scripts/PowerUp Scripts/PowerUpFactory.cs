@@ -8,7 +8,9 @@ public enum PowerUpType
 {
     Health,
     Speed,
-    Repel
+    Repel,
+    Shield,
+    Multi
 }
 
 public class PowerUpFactory : MonoBehaviour

@@ -12,6 +12,8 @@ public class PowerUpPool : MonoBehaviour
     [SerializeField] private GameObject healthPower;
     [SerializeField] private GameObject speedPower;
     [SerializeField] private GameObject repelPower;
+    [SerializeField] private GameObject shieldPower;
+    [SerializeField] private GameObject multiPower;
 
     public GameObject Get(PowerUpType type)
     {
@@ -56,6 +58,8 @@ public class PowerUpPool : MonoBehaviour
             case PowerUpType.Health: return healthPower;
             case PowerUpType.Speed: return speedPower;
             case PowerUpType.Repel: return repelPower;
+            case PowerUpType.Shield: return shieldPower;
+            case PowerUpType.Multi: return multiPower;
         }
         return null;
     }
