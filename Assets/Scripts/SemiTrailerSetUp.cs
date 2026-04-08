@@ -14,5 +14,11 @@ public class SemiTrailerSetUp : MonoBehaviour
         IDrivingSteerStrategy driveSteer = new SemiTrailerSteer();
 
         car.Initialize(driveSpeed, driveSteer);
+
+        // Barry - auto attach health manager
+        if (GetComponent<CarHealthManager>() == null)
+        {
+            gameObject.AddComponent<CarHealthManager>();
+        }
     }
 }

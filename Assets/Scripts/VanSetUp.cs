@@ -14,5 +14,11 @@ public class VanSetUp : MonoBehaviour
         IDrivingSteerStrategy driveSteer = new VanSteer();
 
         car.Initialize(driveSpeed, driveSteer);
+
+        // Barry - auto attach health manager
+        if (GetComponent<CarHealthManager>() == null)
+        {
+            gameObject.AddComponent<CarHealthManager>();
+        }
     }
 }
