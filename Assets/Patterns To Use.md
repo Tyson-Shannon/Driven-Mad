@@ -34,9 +34,12 @@ Pooling: to load them in list (Coded)
 Decorator: speedup to car (Coded)
 Visitor: shield
 Observer and State: Zombie Repel
+Facade: multi power up
 
 Powerups:
 * Speed Up
 * Health
 * Zombie Repel
 * Shield
+
+mediator pattern: car distance lvl highscore (distance counter - txt in menu)
