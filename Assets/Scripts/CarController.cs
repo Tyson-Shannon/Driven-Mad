@@ -12,6 +12,8 @@ public class CarController : MonoBehaviour
     private float steerAmount;
     private float speed;
 
+    private List<float> activeSpeedBoosts = new List<float>();
+
     public void Initialize(IDrivingSpeedStrategy driveStrategy, IDrivingSteerStrategy steerStrategy)
     {
         this.driveStrategy = driveStrategy;
@@ -40,8 +42,14 @@ public class CarController : MonoBehaviour
 
     public float GetSpeed()
     {
-        //called by RoadScroll
-        return speed;
+        float totalBoost = 0f;
+
+        foreach (float boost in activeSpeedBoosts)
+        {
+            totalBoost += boost;
+        }
+
+        return speed + totalBoost;
     }
 
     public void UpdateSpeed(float incr)
@@ -57,17 +65,10 @@ public class CarController : MonoBehaviour
 
     private IEnumerator SpeedUpRoutine(float boostAmount, float duration)
     {
-        IDrivingSpeedStrategy original = driveStrategy;
-        float originalSpeed = speed;
-
-        //wrap with decorator
-        driveStrategy = new SpeedUpDecorator(original, boostAmount);
-        speed = driveStrategy.GetDriveSpeed();
+        activeSpeedBoosts.Add(boostAmount);
 
         yield return new WaitForSeconds(duration);
 
-        //revert back
-        driveStrategy = original;
-        speed = originalSpeed;
+        activeSpeedBoosts.Remove(boostAmount);
     }
 }
