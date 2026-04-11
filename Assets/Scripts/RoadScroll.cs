@@ -39,8 +39,8 @@ public class RoadScroll : MonoBehaviour
         }
 
         //get ammount to offset texture times framerate
-        float offset = Time.time * carSpeed;
+        float offset = Time.deltaTime * carSpeed;
         //move texture on plane to simulate movement
-        rend.material.SetTextureOffset("_MainTex", new Vector2(0, -offset));
+        rend.material.SetTextureOffset("_MainTex", new Vector2(0, rend.material.mainTextureOffset.y - offset));
     }
 }

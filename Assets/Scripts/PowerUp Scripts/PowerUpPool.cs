@@ -66,6 +66,6 @@ public class PowerUpPool : MonoBehaviour
 
     private bool MatchesType(GameObject obj, PowerUpType type)
     {
-        return obj.name.Contains(type.ToString());
+        return obj.name.Contains(type.ToString().ToLower());
     }
 }

@@ -28,7 +28,7 @@ public class SpeedUpCollide : MonoBehaviour
     {
         //move powerup to look like car drives towards it
         carSpeed = car.GetSpeed();
-        transform.Translate(new Vector3(0, 0, -(carSpeed * Time.time)));
+        transform.Translate(new Vector3(0, 0, -(carSpeed * Time.deltaTime * 10)));
     }
 
     private void OnTriggerEnter(Collider other)
