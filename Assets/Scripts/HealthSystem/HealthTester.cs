@@ -18,6 +18,7 @@ public class HealthTester : MonoBehaviour
             Debug.Log("SPACE pressed - took 20 damage!");
         }
 
+        /*(now done by powerups
         // Press H to heal 30 HP
         if (Input.GetKeyDown(KeyCode.H))
         {
@@ -31,5 +32,6 @@ public class HealthTester : MonoBehaviour
             carHealth.ActivateShield(50);
             Debug.Log("S pressed - shield activated (50 HP)!");
         }
+        */
     }
 }

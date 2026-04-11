@@ -217,4 +217,10 @@ public class CarHealthManager : MonoBehaviour
     public int GetCurrentHealth() => healthSystem.CurrentHealth;
     public int GetMaxHealth() => healthSystem.MaxHealth;
     public bool IsAlive() => healthSystem.IsAlive;
+
+    //VISITOR PATTERN - shield
+    public void Accept(IPowerUpVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
 }
