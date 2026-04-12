@@ -13,6 +13,7 @@ public class CarController : MonoBehaviour
     private float horizontalInput;
     private float steerAmount;
     private float speed;
+    private int isAlive = 1;
 
     private List<float> activeSpeedBoosts = new List<float>();
 
@@ -51,12 +52,25 @@ public class CarController : MonoBehaviour
             totalBoost += boost;
         }
 
-        return speed + totalBoost;
+        return (speed + totalBoost)*isAlive;
     }
 
     public void UpdateSpeed(float incr)
     {
         speed = speed + incr;
+    }
+
+    //will set speed to zero if player dies
+    public void SetIsAlive(bool alive)
+    {
+        if (alive)
+        {
+            isAlive = 1;
+        }
+        if (!alive)
+        {
+            isAlive = 0;
+        }
     }
 
     //SpeedUp PowerUp--

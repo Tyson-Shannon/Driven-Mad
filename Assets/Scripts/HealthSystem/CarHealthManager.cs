@@ -113,7 +113,7 @@ public class CarHealthManager : MonoBehaviour
         OnHealthChanged?.Invoke(healthSystem.CurrentHealth, healthSystem.MaxHealth);
     }
 
-    void Die(DamageSource source)
+    public void Die(DamageSource source)
     {
         Debug.Log($"=== CAR DESTROYED by {source}! ===");
 
@@ -222,5 +222,10 @@ public class CarHealthManager : MonoBehaviour
     public void Accept(IPowerUpVisitor visitor)
     {
         visitor.Visit(this);
+    }
+
+    public void ChangeHealth(int health)
+    {
+        OnHealthChanged?.Invoke(health, healthSystem.MaxHealth);
     }
 }
