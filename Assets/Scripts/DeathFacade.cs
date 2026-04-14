@@ -12,5 +12,9 @@ public class DeathFacade : MonoBehaviour
         car.SetIsAlive(false);//set speed to 0
         carHealth.ChangeHealth(0);//set health to 0
         carHealth.Die(CarHealthManager.DamageSource.Obstacle);//stop car steer movement
+
+        // Barry 04/14/26
+        ScoreManager.Instance.SaveHighScore();
+        ScoreManager.Instance.ResetRun();
     }
 }

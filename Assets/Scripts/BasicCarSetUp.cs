@@ -21,4 +21,10 @@ public class BasicCarSetUp : MonoBehaviour
             gameObject.AddComponent<CarHealthManager>();
         }
     }
+
+    //Barry
+    void Start()
+    {
+        ScoreManager.Instance.SetCarType("MuscleCar"); // change name per car
+    }
 }
