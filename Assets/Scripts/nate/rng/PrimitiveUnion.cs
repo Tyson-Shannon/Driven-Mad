@@ -17,7 +17,7 @@ public unsafe struct PrimitiveUnion {
   [FieldOffset(0)]public fixed ushort _sValue16[8];
   [FieldOffset(0)]public fixed char _valueChar[8];
   [FieldOffset(0)]public fixed byte _valueByte[16];
-  [FieldOffset(0)]public fixed byte _sValueByte[16];
+  [FieldOffset(0)]public fixed sbyte _sValueByte[16];
   [FieldOffset(0)]public fixed bool _valueBool[16];
 
   #region CONSTRUCTORS

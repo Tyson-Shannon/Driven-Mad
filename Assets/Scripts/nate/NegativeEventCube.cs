@@ -6,21 +6,19 @@ public class NegativeEventCube : SpawningEvent {
   
   public class NegativeEventCubeFactory : EventFactoryNegative {
       
-    public static NegativeEventCubeFactory CreateNegativeEventCubeFactory(Vector3 position, Quaternion rotation){
+    public static NegativeEventCubeFactory CreateNegativeEventCubeFactory(){
       var cubePrefab = Resources.Load<GameObject>("prefabs/nate/NegativeEventCube");
       
       var selfObject = new GameObject("NegativeEventCubeFactory");
       var self =  selfObject.AddComponent<NegativeEventCubeFactory>();
       
       self._prefab = cubePrefab;
-      self._position = position;
-      self._rotation = rotation;
 
       return self;
     }
 
-    public override SpawningEvent CreateSpawningEvent(){
-      GameObject cubePrefab = Instantiate(_prefab, _position, Quaternion.identity);
+    public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
+      GameObject cubePrefab = Instantiate(_prefab, position, rotation);
       return cubePrefab.GetComponent<SpawningEvent>();
     }
   }
