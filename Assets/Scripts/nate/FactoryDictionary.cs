@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public abstract class FactoryDictionary {
   private int _factoryCount = 0;
@@ -9,7 +7,7 @@ public abstract class FactoryDictionary {
   public int GetFactoryCount(){ return _factoryCount; }
   
   protected EventFactory SelectEventFactoryInternal(int randomSelection){
-    return _factories[randomSelection];
+    return _factories[randomSelection % _factories.Count];
   }
   public abstract EventFactory SelectEventFactory(int randomSelection);
 
@@ -22,7 +20,9 @@ public abstract class FactoryDictionary {
 
 public class PositiveFactoryDictionary : FactoryDictionary {
   private static PositiveFactoryDictionary _instance;
-  public FactoryDictionary CreatePositiveFactoryDictionary(){
+  
+  private PositiveFactoryDictionary(){}
+  public static PositiveFactoryDictionary CreatePositiveFactoryDictionary(){
     if (_instance == null) {
       _instance = new PositiveFactoryDictionary();
     }
@@ -41,7 +41,8 @@ public class PositiveFactoryDictionary : FactoryDictionary {
 public class NegativeFactoryDictionary : FactoryDictionary {
   private static NegativeFactoryDictionary _instance;
 
-  public FactoryDictionary CreateNegativeFactoryDictionary(){
+  private NegativeFactoryDictionary(){}
+  public static NegativeFactoryDictionary CreateNegativeFactoryDictionary(){
     if (_instance == null) {
       _instance = new NegativeFactoryDictionary();
     }
@@ -60,7 +61,8 @@ public class NegativeFactoryDictionary : FactoryDictionary {
 public class BossFactoryDictionary : FactoryDictionary {
   private static BossFactoryDictionary _instance;
 
-  public BossFactoryDictionary CreateBossFactoryDictionary(){
+  private BossFactoryDictionary(){}
+  public static BossFactoryDictionary CreateBossFactoryDictionary(){
     if (_instance == null) {
       _instance = new BossFactoryDictionary();
     }

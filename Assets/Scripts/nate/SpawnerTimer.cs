@@ -10,7 +10,7 @@ public class SpawnerTimer : MonoBehaviour {
   private float _nonBossTimeElapsed = 0;
 
   private bool _isRunning = false;
-  private bool IsRunning {
+  public bool IsRunning {
     get{return _isRunning;}
     set{_isRunning = value;}
   }
@@ -26,6 +26,7 @@ public class SpawnerTimer : MonoBehaviour {
 
     self._bossTime = bossTime;
     self._nonBossTime = nonBossTime;
+    self._isRunning = false;
 
     return self;
   }

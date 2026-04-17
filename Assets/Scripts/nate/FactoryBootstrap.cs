@@ -6,41 +6,54 @@ using UnityEngine;
 public static class FactoryBootstrap
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Init()
-    {
+    private static void Init() {
         Debug.Log("BOOTSTRAP START");
 
-        RegisterFactories(typeof(EventFactoryPositive));
-        RegisterFactories(typeof(EventFactoryNegative));
-        RegisterFactories(typeof(EventFactoryBoss));
+        RegisterFactories(
+            typeof(EventFactoryPositive),
+            PositiveFactoryDictionary.CreatePositiveFactoryDictionary()
+        );
+
+        RegisterFactories(
+            typeof(EventFactoryNegative),
+            NegativeFactoryDictionary.CreateNegativeFactoryDictionary()
+        );
+
+        RegisterFactories(
+            typeof(EventFactoryBoss),
+            BossFactoryDictionary.CreateBossFactoryDictionary()
+        );
 
         Debug.Log("BOOTSTRAP COMPLETE");
     }
 
-    private static void RegisterFactories(Type baseType)
-    {
+    private static void RegisterFactories(Type baseType, FactoryDictionary dictionary) {
         var factoryTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => {
                 try { return a.GetTypes(); }
-                catch { return Array.Empty<Type>(); } // avoid reflection load crashes
+                catch { return Array.Empty<Type>(); }
             })
             .Where(t =>
                 !t.IsAbstract &&
-                baseType.IsAssignableFrom(t)
+                baseType.IsAssignableFrom(t) &&
+                t != baseType
             );
 
-        foreach (var type in factoryTypes)
-        {
+        foreach (var type in factoryTypes) {
             try {
-                object instance = CreateFactoryInstance(type);
+                object created = CreateFactoryInstance(type);
 
-                if (instance == null) {
-                    Debug.LogError($"[FactoryBootstrap] Failed to create instance of {type.Name}");
+                if (created is not EventFactory factory) {
+                    Debug.LogError($"[FactoryBootstrap] {type.Name} is not an EventFactory");
                     continue;
                 }
 
-                RegisterFactory(baseType, instance);
+                if (!factory.ShouldRegister) {
+                    Debug.Log($"[FactoryBootstrap] Skipped {type.Name}");
+                    continue;
+                }
 
+                dictionary.AddEventFactory(factory);
                 Debug.Log($"[FactoryBootstrap] Registered {type.Name}");
             }
             catch (Exception ex) {
@@ -49,9 +62,7 @@ public static class FactoryBootstrap
         }
     }
 
-    private static object CreateFactoryInstance(Type type)
-    {
-        // Prefer static Create() or CreateXyzFactory()
+    private static object CreateFactoryInstance(Type type) {
         var createMethod = type.GetMethods(BindingFlags.Public | BindingFlags.Static)
             .FirstOrDefault(m =>
                 m.GetParameters().Length == 0 &&
@@ -63,23 +74,6 @@ public static class FactoryBootstrap
             return createMethod.Invoke(null, null);
         }
 
-        // Fallback to default constructor
         return Activator.CreateInstance(type);
-    }
-
-    private static void RegisterFactory(Type baseType, object instance)
-    {
-        if (baseType == typeof(EventFactoryPositive)) {
-            PositiveFactoryDictionary.Register((EventFactoryPositive)instance);
-        }
-        else if (baseType == typeof(EventFactoryNegative)) {
-            NegativeFactoryDictionary.Register((EventFactoryNegative)instance);
-        }
-        else if (baseType == typeof(EventFactoryBoss)) {
-            BossFactoryDictionary.Register((EventFactoryBoss)instance);
-        }
-        else {
-            Debug.LogError($"[FactoryBootstrap] Unknown base type {baseType.Name}");
-        }
     }
 }

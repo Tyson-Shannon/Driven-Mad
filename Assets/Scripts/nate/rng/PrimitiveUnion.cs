@@ -10,11 +10,11 @@ using System.Runtime.InteropServices;
 public unsafe struct PrimitiveUnion {
   [FieldOffset(0)]private UInt128 _value128;
   [FieldOffset(0)]public fixed ulong _value64[2];
-  [FieldOffset(0)]public fixed ulong _sValue64[2];
+  [FieldOffset(0)]public fixed long _sValue64[2];
   [FieldOffset(0)]public fixed uint _value32[4];
-  [FieldOffset(0)]public fixed uint _sValue32[4];
+  [FieldOffset(0)]public fixed int _sValue32[4];
   [FieldOffset(0)]public fixed ushort _value16[8];
-  [FieldOffset(0)]public fixed ushort _sValue16[8];
+  [FieldOffset(0)]public fixed short _sValue16[8];
   [FieldOffset(0)]public fixed char _valueChar[8];
   [FieldOffset(0)]public fixed byte _valueByte[16];
   [FieldOffset(0)]public fixed sbyte _sValueByte[16];

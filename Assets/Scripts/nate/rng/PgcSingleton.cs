@@ -5,7 +5,7 @@ using System;
 public class PgcSingleton {
   // Singleton instance
   #nullable enable
-  private static PgcSingleton? _self = null;
+  private static PgcSingleton self;
   #nullable disable
 
   private PrimitiveUnion _state; // The background state used by PGC-XSL-RR-RR.
@@ -14,30 +14,19 @@ public class PgcSingleton {
 
   #region SINGLETONCONSTRUCTOR
   private PgcSingleton(ulong seed){
-    _state = new PrimitiveUnion(seed, ~seed);
-  }
-
-  #nullable enable
-  public static PgcSingleton CreatePgcSingleton(ulong seed=0){
-    PgcSingleton? self = _self;
-
-    if (self != null) {  // The class is already initialized, and setup need not be done.
-                         // The seed should not be repeatedly set.
-      return _self;
-    }
-
     if (seed <= byte.MaxValue) {
       seed = (ulong)DateTime.Now.Ticks; // seed=0 sacrifices too much randomness.
     }
+    
+    _state = new PrimitiveUnion(seed, seed * seed);
+  }
 
-    self = new PgcSingleton(seed);
-
-    if (self == null) {
-      throw new System.InsufficientMemoryException("Error: Memory allocation failed on " +
-                                                   "initialization of MyRandSingleton");
+  public static PgcSingleton CreatePgcSingleton(ulong seed=0){
+    if (PgcSingleton.self == null) {
+      PgcSingleton.self = new PgcSingleton(seed);
     }
 
-    return self;
+    return PgcSingleton.self;
   }
   #nullable disable
   #endregion SINGLETONCONSTRUCTOR

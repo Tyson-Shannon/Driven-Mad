@@ -1,31 +1,21 @@
 using UnityEngine;
 
 public class PositiveEventCapsule : SpawningEvent {
-  // Here, you can put in a static factory method that sets up further class components after Inatantiate is called.
-  // As well as anything else.
+  // Do whatever you want here: this is whatever you happen to be spawning.
   
   public class PositiveEventCapsuleFactory : EventFactoryPositive {
-    // Every gameobject with a mesh renderer is going to need a prefab, position, and rotation. The abstract base class
-    // contains the state for those as public fields, and can be modified within the factory ad nauseam.
-    
-    // This is the factory's constructor. It must be static, as it will create the instance.
-    public static PositiveEventCapsuleFactory CreatePositiveEventCapsuleFactory(){
-      // Then, create the factory itself as you would with any other monobehavior.
-      var selfObject = new GameObject("PositiveEventCapsuleFactory");
-      var self = selfObject.AddComponent<PositiveEventCapsuleFactory>(); // "this" is a reserved keyword, so we use self instead.
-      
-      // Next, create the prefab, and put it in a folder called "Resources", which will be spelled exactly as such and
-      // directly in Assets. When you call Resources.Load(), the Unity engine will look in that folder from a relative 
-      // path.
-      self._prefab = Resources.Load<GameObject>("prefabs/nate/PositiveEventCapsule");
-      
-      // Finally, we return the instance.
-      return self;
+    // If a spawnable event needs any extra state, put it right here.
+    // Since it's a nested class, you're not going to be able to put anything in from the inspector.
+
+    public PositiveEventCapsuleFactory(){
+      // Load the prefab from the "Resources" directory. The path is local to wherever under the "Resources" tree it is.
+      _prefab = Resources.Load<GameObject>("prefabs/nate/PositiveEventCapsule");
     }
 
     public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
       GameObject capsuleObject = Instantiate(_prefab, position, rotation);
       return capsuleObject.GetComponent<SpawningEvent>(); // We'll need to figure out a way to avoid doing this in a hot loop.
+      // Or, grab the object from the pool.
     }
   }
 }

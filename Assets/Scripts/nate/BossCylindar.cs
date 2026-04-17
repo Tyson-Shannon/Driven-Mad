@@ -1,18 +1,13 @@
 using UnityEngine;
 
-public class BossCylindar : MonoBehaviour
-{
+// Look for PositiveEventCapsule for instructions, this is the same, but uses the NegativeEvent
+
+public class BossCylindar : SpawningEvent {
     public class BossCylindarFactory : EventFactoryBoss {
       
-        public static EventFactoryBoss CreateBossEventCubeFactory(){
-            var cubePrefab = Resources.Load<GameObject>("prefabs/nate/NegativeEventCube");
-      
-            var selfObject = new GameObject("NegativeEventCubeFactory");
-            var self =  selfObject.AddComponent<BossCylindarFactory>();
-      
-            self._prefab = cubePrefab;
-
-            return self;
+        public BossCylindarFactory(){
+            _prefab = Resources.Load<GameObject>("prefabs/nate/BossCylindar");
+            _registerFactory = true;
         }
 
         public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){

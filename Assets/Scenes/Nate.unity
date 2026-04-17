@@ -340,8 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8417960330ba99094a0d13d0260e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _capsulePrefab: {fileID: 5429259758024635455, guid: d8a9f46b91b254558a99360b17d95e4e, type: 3}
-  _cubePrefab: {fileID: 4434254164024329478, guid: b6bca73fc5dc5e218ba36e933802a5b7, type: 3}
+  _regularEventTiming: 1.5
+  _bossEventTimingFactor: 10
+  _isRunning: 0
 --- !u!135 &1943161889
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -1,47 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEngine;
-
 public class EventFactorySelector {
   public bool _isBoss = false; // This is to be set from external contexts, and does not belong to the class. Do not write to this.
-  private sbyte _roll;
-  private EventFactory _factory;
   
-  #region QUICK_SELECT
+  // We reroll every time we wish to reset.
+  private PgcSingleton _prng;
+  private PrimitiveUnion _roll;
 
-  public EventFactoryBoss Boss { get; set; }
-  public EventFactoryPositive Positive { get; set; }
-  public EventFactoryNegative Negative { get; set; }
+  // We return a factory by pulling it from its dictionary.
+  private PositiveFactoryDictionary _positive;
+  private NegativeFactoryDictionary _negative;
+  private BossFactoryDictionary _boss;
   
-  #endregion QUICK_SELECT
-
-  public EventFactorySelector(sbyte roll){
-    _roll = roll;
+  public EventFactorySelector(){
+    // Get the singleton and the roll.
+    _prng = PgcSingleton.CreatePgcSingleton();
+    _roll = _prng.RandomPrimativeUnion();
+    
+    // Get the factory dictionaries to pick an event from
+    _positive = PositiveFactoryDictionary.CreatePositiveFactoryDictionary();
+    _negative = NegativeFactoryDictionary.CreateNegativeFactoryDictionary();
+    _boss = BossFactoryDictionary.CreateBossFactoryDictionary();
   }
 
-  [CanBeNull]
-  public EventFactory SelectEventFactory(byte difficultyAdjust){
-    if (_isBoss) {
-      _factory = this.SelectBossFactory();
-    }
-    else {
-      _factory = (_roll - difficultyAdjust < 0) ? this.SelectPositiveEventFactory() : this.SelectNegativeEventFactory();
-    }
+  public unsafe EventFactory SelectEventFactory(byte difficultyAdjust=0){
+    int randomSelection = _roll._sValue32[1];
+    FactoryDictionary factoryDict = (_isBoss) ? _boss 
+      : (_roll._sValueByte[0] - difficultyAdjust > 0) 
+          ? _positive
+          : _negative;
+      ; 
 
     // We return this regardless.
-    return _factory;
-  }
-
-  private EventFactory SelectBossFactory(){
-    return this.Boss;
-  }
-  
-  private EventFactory SelectPositiveEventFactory(){
-    return this.Positive;
-  }
-
-  private EventFactory SelectNegativeEventFactory(){
-    return this.Negative;
+    return factoryDict.SelectEventFactory(randomSelection);
   }
 }
