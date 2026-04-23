@@ -69,14 +69,12 @@ public unsafe struct PrimitiveUnion {
   #endregion RNGOps
 
   public void CompressBools(){
-    int iterationLimit = sizeof(PrimitiveUnion) / sizeof(bool);
-    
-    for (int i = 0; i < iterationLimit; i++) {
+    for (int i = 0; i < 16; i++) {
       _valueByte[i] <<= i;
-    }
-
-    for (int i = 0; i < iterationLimit; i++) {
       _value16[0] += _valueByte[i];
+      if (i != 0) { // Edge case. We really don't want to delete the first byte.
+        _valueByte[i] = 0;
+      }
     }
   }
 }

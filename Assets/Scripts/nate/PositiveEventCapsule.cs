@@ -9,7 +9,8 @@ public class PositiveEventCapsule : SpawningEvent {
 
     public PositiveEventCapsuleFactory(){
       // Load the prefab from the "Resources" directory. The path is local to wherever under the "Resources" tree it is.
-      _prefab = Resources.Load<GameObject>("prefabs/nate/PositiveEventCapsule");
+      base._prefab = Resources.Load<GameObject>("prefabs/nate/PositiveEventCapsule");
+      base._registerFactory = true;
     }
 
     public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){

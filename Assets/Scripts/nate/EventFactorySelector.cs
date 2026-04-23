@@ -13,12 +13,20 @@ public class EventFactorySelector {
   public EventFactorySelector(){
     // Get the singleton and the roll.
     _prng = PgcSingleton.CreatePgcSingleton();
-    _roll = _prng.RandomPrimativeUnion();
+    RerollInternal();
     
     // Get the factory dictionaries to pick an event from
     _positive = PositiveFactoryDictionary.CreatePositiveFactoryDictionary();
     _negative = NegativeFactoryDictionary.CreateNegativeFactoryDictionary();
     _boss = BossFactoryDictionary.CreateBossFactoryDictionary();
+  }
+
+  private void RerollInternal(){
+    _roll = _prng.RandomPrimativeUnion();
+  }
+
+  public void Reroll(){
+    RerollInternal();
   }
 
   public unsafe EventFactory SelectEventFactory(byte difficultyAdjust=0){

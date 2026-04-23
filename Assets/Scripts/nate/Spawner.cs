@@ -49,19 +49,21 @@ public class Spawner : MonoBehaviour {
         _eventSelector._isBoss = true;
         goto case SpawningFlags.NON_BOSS;
         
-      case SpawningFlags.NON_BOSS: // It it isn't time for a boss, then we just do this.
+      case SpawningFlags.NON_BOSS: // It isn't time for a boss, then we just do this.
         _timer.NonBossTime = 0;
-        
-        // Regardless of what we spawn, we want to do this
-        var factory = _eventSelector.SelectEventFactory(_difficultyAdjust);
-        factory.CreateSpawningEvent(transform.position, transform.rotation);
-        _eventSelector._isBoss = false;
+        _eventSelector.Reroll();
         break;
       
-      case SpawningFlags.NONE:
-        break;
+      default:
+        goto dontSpawn;
     }
-
+    
+    // Regardless of what we spawn, we want to do this
+    var factory = _eventSelector.SelectEventFactory(_difficultyAdjust);
+    factory.CreateSpawningEvent(transform.position, transform.rotation);
+    _eventSelector._isBoss = false; // We never want to leave this on at the end of the update.
+    
+    dontSpawn: ;
   }
 
   public void StopSpawing(){

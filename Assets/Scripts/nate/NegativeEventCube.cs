@@ -6,7 +6,8 @@ public class NegativeEventCube : SpawningEvent {
   public class NegativeEventCubeFactory : EventFactoryNegative {
       
     public NegativeEventCubeFactory(){
-      _prefab = Resources.Load<GameObject>("prefabs/nate/NegativeEventCube");
+      base._prefab = Resources.Load<GameObject>("prefabs/nate/NegativeEventCube");
+      base._registerFactory = true;
     }
 
     public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){

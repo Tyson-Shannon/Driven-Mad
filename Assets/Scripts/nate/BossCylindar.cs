@@ -6,8 +6,8 @@ public class BossCylindar : SpawningEvent {
     public class BossCylindarFactory : EventFactoryBoss {
       
         public BossCylindarFactory(){
-            _prefab = Resources.Load<GameObject>("prefabs/nate/BossCylindar");
-            _registerFactory = true;
+            base._prefab = Resources.Load<GameObject>("prefabs/nate/BossCylindar");
+            base._registerFactory = true;
         }
 
         public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){

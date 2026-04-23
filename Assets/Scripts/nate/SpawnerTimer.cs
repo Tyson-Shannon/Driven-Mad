@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SpawnerTimer : MonoBehaviour {
   private float _bossTime;
-  public float BossTime{set{_bossTime = value;}}
   private float _nonBossTime;
-  public float NonBossTime{set{_nonBossTime = value;}}
 
   private float _bossTimeElapsed = 0;
+  public float BossTime{set{_bossTimeElapsed = value;}}
   private float _nonBossTimeElapsed = 0;
+  public float NonBossTime{set{_nonBossTimeElapsed = value;}}
 
   private bool _isRunning = false;
   public bool IsRunning {
@@ -32,8 +32,8 @@ public class SpawnerTimer : MonoBehaviour {
   }
 
   private void ResetInternal(){
-    _bossTime = 0;
-    _nonBossTime = 0;
+    _bossTimeElapsed = 0;
+    _nonBossTimeElapsed = 0;
   }
 
   public void Reset(){

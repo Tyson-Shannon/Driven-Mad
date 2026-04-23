@@ -13,7 +13,12 @@ public abstract class EventFactory {
 #region CHILD_CLASSES
 
 // The following child classes serve as markers for random selection logic.
-public abstract class EventFactoryPositive : EventFactory {}
-public abstract class EventFactoryNegative : EventFactory {}
-public abstract class EventFactoryBoss : EventFactory {}
+public abstract class EventFactoryPositive : EventFactory {
+}
+
+public abstract class EventFactoryNegative : EventFactory {
+}
+
+public abstract class EventFactoryBoss : EventFactory {
+}
 #endregion CHILD_CLASSES
