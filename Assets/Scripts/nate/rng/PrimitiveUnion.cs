@@ -28,15 +28,19 @@ public unsafe struct PrimitiveUnion {
   #endregion //CONSTRUCTORS
   
   #region RNGOps
-  internal void LinearCongruence(PrimitiveUnion multiplier, ulong increment){
-    _value128 = _value128 * multiplier._value128 + increment;
+  public PrimitiveUnion LinearCongruence(PrimitiveUnion multiplier, ulong increment){
+    var next = new PrimitiveUnion(this._value64[0], this._value64[1]);
+    next._value128 = next._value128 * multiplier._value128 + increment;
+    return next;
   }
 
   private static ulong XorShiftRotate(ulong halfState, byte rotation){
+    rotation &= 63;
+    if (rotation == 0) return halfState;
     return (halfState << rotation) | (halfState >> (64 - rotation));
   }
 
-  internal PrimitiveUnion XorShift(){ // Here be there dragons. Exposing the upper half of the state in the result: hope this doesn't affect distribution.
+  public PrimitiveUnion XorShift(){ // Here be there dragons. Exposing the upper half of the state in the result: hope this doesn't affect distribution.
     ulong stateXored = _value64[0] ^ _value64[1];  // Use the upper part of the state to affect the result.
     byte rotation = (byte)(_value128 >> 122);
     
@@ -46,33 +50,13 @@ public unsafe struct PrimitiveUnion {
       _value64[1], stateXored
     );
   }
-  
-  #region DEPRICATED
-  // Turns out that this modulo is handled by integer overflow semantics: may as well keep it.
-  internal void ModB2(byte power){
-    if(power > 128) // We're not going to deal with anything larger than this.
-      throw new IndexOutOfRangeException("The power must be greater than 128.");
-    
-    fixed (PrimitiveUnion* ptr = &this) { // Having the GC suddenly move the pointer during this block would be catastrophic.
-      bool powerOverflowed = power >= 64;
-      ulong* changedHalf = (powerOverflowed) ? ((ulong*)ptr + 1): (ulong*)ptr;
-
-      if (powerOverflowed) // Need to adjust the power: the lower long should be unaffected arithmetically.
-        power -= 64;
-
-      ulong moduloDivisor = (1UL << power) - 1;
-      
-      *changedHalf &= moduloDivisor;
-    }
-  }
-  #endregion DEPRICATED
   #endregion RNGOps
 
   public void CompressBools(){
     for (int i = 0; i < 16; i++) {
       _valueByte[i] <<= i;
-      _value16[0] += _valueByte[i];
-      if (i != 0) { // Edge case. We really don't want to delete the first byte.
+      if (i != 0) { // Edge case. We really don't want to delete the first byte, and we don't want to add it to itself.
+        _value16[0] += _valueByte[i];
         _valueByte[i] = 0;
       }
     }

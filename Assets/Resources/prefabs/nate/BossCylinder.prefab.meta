@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Scenes/BasicCar.unity.meta
 guid: 639e646fb1f476146860a5fc54003776
 DefaultImporter:
@@ -6,6 +7,10 @@ DefaultImporter:
 guid: b05b7dafc37e01a89b5e8fc1f9046c2c
 PrefabImporter:
 >>>>>>>> 213f798 (WIP local recovery before sync):Assets/Resources/prefabs/nate/BossCylinder.prefab.meta
+=======
+guid: 2a8213741cb234f8bb49f3dbfddf20a6
+PrefabImporter:
+>>>>>>> 2b77c6a (Finally have a working spawner that spawns all potential spawnable objects on a given timeframe. It randomly picks between positive and negative events, but will spawn a boss based on a differing timer.)
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -340,9 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8417960330ba99094a0d13d0260e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _regularEventTiming: 1.5
-  _bossEventTimingFactor: 10
-  _isRunning: 0
+  _regularEventTiming: 1
+  _bossEventTimingFactor: 4
+  _isRunning: 1
 --- !u!135 &1943161889
 SphereCollider:
   m_ObjectHideFlags: 0

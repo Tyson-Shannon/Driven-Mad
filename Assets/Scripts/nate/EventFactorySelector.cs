@@ -22,7 +22,9 @@ public class EventFactorySelector {
   }
 
   private void RerollInternal(){
-    _roll = _prng.RandomPrimativeUnion();
+    var tmp = _prng.RandomPrimativeUnion();
+    _roll = tmp;
+    debugCheck: ;
   }
 
   public void Reroll(){
@@ -31,12 +33,18 @@ public class EventFactorySelector {
 
   public unsafe EventFactory SelectEventFactory(byte difficultyAdjust=0){
     int randomSelection = _roll._sValue32[1];
-    FactoryDictionary factoryDict = (_isBoss) ? _boss 
-      : (_roll._sValueByte[0] - difficultyAdjust > 0) 
-          ? _positive
-          : _negative;
-      ; 
+    FactoryDictionary factoryDict;
+    if (_isBoss) {
+      factoryDict = _boss;
+      goto returnBoss;
+    }
 
+    //(_isBoss) ? _boss 
+    factoryDict = (_roll._sValueByte[0] - difficultyAdjust > 0) 
+      ? _positive
+      : _negative;
+
+  returnBoss:
     // We return this regardless.
     return factoryDict.SelectEventFactory(randomSelection);
   }

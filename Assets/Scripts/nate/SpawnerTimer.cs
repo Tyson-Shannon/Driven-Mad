@@ -5,28 +5,22 @@ public class SpawnerTimer : MonoBehaviour {
   private float _nonBossTime;
 
   private float _bossTimeElapsed = 0;
-  public float BossTime{set{_bossTimeElapsed = value;}}
   private float _nonBossTimeElapsed = 0;
-  public float NonBossTime{set{_nonBossTimeElapsed = value;}}
 
-  private bool _isRunning = false;
-  public bool IsRunning {
-    get{return _isRunning;}
-    set{_isRunning = value;}
-  }
+  private IsRunningCls _isRunning;
   
   private bool _spawnBoss = false;
-  public bool SpawnBoss{get{return _spawnBoss;}}
+  public bool SpawnBoss => _spawnBoss;
   private bool _spawnNonBoss = false;
-  public bool SpawnNonBoss{get{return _spawnNonBoss;}}
+  public bool SpawnNonBoss => _spawnNonBoss;
 
-  public static SpawnerTimer CreateSpawnerTimer(float bossTime, float nonBossTime){
+  public static SpawnerTimer CreateSpawnerTimer(float bossTime, float nonBossTime, IsRunningCls isRunningCls){
     var spawnerTimerObj = new GameObject("SpawnerTimer");
     var self =  spawnerTimerObj.AddComponent<SpawnerTimer>();
 
     self._bossTime = bossTime;
     self._nonBossTime = nonBossTime;
-    self._isRunning = false;
+    self._isRunning = isRunningCls;
 
     return self;
   }
@@ -36,16 +30,26 @@ public class SpawnerTimer : MonoBehaviour {
     _nonBossTimeElapsed = 0;
   }
 
-  public void Reset(){
-    ResetInternal();
+  private void Reset(){
+    _bossTimeElapsed = 0;
+    _nonBossTimeElapsed = 0;
     _spawnBoss = false;
     _spawnNonBoss = false;
   }
   
-  public unsafe void Update(){
+  public void ResetBoss(){
+    Reset();
+  }
+
+  public void ResetNonBoss(){
+    _nonBossTimeElapsed = 0;
+    _spawnNonBoss = false;
+  }
+  
+  public void Update(){
     // Make sure we don't run if we're not supposed to be running.
-    if (!IsRunning) {
-      ResetInternal();
+    if (!_isRunning._isRunning) {
+      Reset();
       return;
     }
     
@@ -57,4 +61,9 @@ public class SpawnerTimer : MonoBehaviour {
     if (_bossTimeElapsed > _bossTime) _spawnBoss = true;
     if (_nonBossTimeElapsed > _nonBossTime) _spawnNonBoss = true;
   }
+}
+
+// Workaround for the lack of ref.
+public class IsRunningCls {
+  public bool _isRunning;
 }

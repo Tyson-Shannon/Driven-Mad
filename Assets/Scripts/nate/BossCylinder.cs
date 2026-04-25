@@ -2,11 +2,11 @@ using UnityEngine;
 
 // Look for PositiveEventCapsule for instructions, this is the same, but uses the NegativeEvent
 
-public class BossCylindar : SpawningEvent {
-    public class BossCylindarFactory : EventFactoryBoss {
+public class BossCylinder : SpawningEvent {
+    public class BossCylinderFactory : EventFactoryBoss {
       
-        public BossCylindarFactory(){
-            base._prefab = Resources.Load<GameObject>("prefabs/nate/BossCylindar");
+        public BossCylinderFactory(){
+            base._prefab = Resources.Load<GameObject>("prefabs/nate/BossCylinder");
             base._registerFactory = true;
         }
 
