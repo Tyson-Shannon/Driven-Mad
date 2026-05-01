@@ -4,9 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleCollide : MonoBehaviour
+public class ObstacleCollide : SpawningEvent<ObstacleCollide, ObstacleCollide.ObstacleType>
 {
-    [SerializeField] private ObstacleFactory factory;
+    public enum ObstacleType
+    {
+        LeftPole,
+        RightPole
+    }
+
+    // Used for enabling/disabling.
+    GameObject obstacle;
+    //[SerializeField] private ObstacleFactory factory;
+    
+    [SerializeField] ObstacleType type;
 
     [SerializeField] private CarController car;
     private float carSpeed;
@@ -19,26 +29,36 @@ public class ObstacleCollide : MonoBehaviour
         transform.Translate(new Vector3((carSpeed * Time.deltaTime * 10), 0, 0));
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //if car collides with obstacle
-        if (other.CompareTag("Player"))
+    protected override void OnCollisionEffects(Collider other){
+        if (car != null)
         {
-
-            if (car != null)
-            {
-                //end game
-                Debug.Log("Car Crash");
-                deathFacade.Die();
-            }
+            //end game
+            Debug.Log("Car Crash");
+            deathFacade.Die();
         }
-        //if obstacle passes car it will eventually hit catcher and be released
-        if (other.CompareTag("ObjectCatcher"))
-        {
-            if (factory != null)
-            {
-                factory.ReleaseObstacle(gameObject);
-            }
+    }
+
+    private void SetupObstacleFactory(){
+        //Any additional setup stuff goes here. Call it in the factory's create method.
+    }
+
+    public class ObstacleCollideFactory : EventFactoryNegative<ObstacleCollide, ObstacleCollide.ObstacleType> {
+        private PgcSingleton _rng = PgcSingleton.CreatePgcSingleton();
+
+        public ObstacleCollideFactory(){
+            base.pool = ObstaclePool.CreateObstaclePool(10);
+        }
+
+        public override unsafe SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
+            PrimitiveUnion roll = _rng.RandomPrimativeUnion();
+            ObstacleType prefabType = (roll._valueByte[0] < byte.MaxValue) 
+                ? ObstacleType.LeftPole 
+                : ObstacleType.RightPole;
+            
+            ObstacleCollide obstacle = base.pool.Get(prefabType, position, rotation);
+            obstacle.SetupObstacleFactory();
+            
+            return obstacle;
         }
     }
 }

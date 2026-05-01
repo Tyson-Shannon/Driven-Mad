@@ -7,54 +7,19 @@ using UnityEngine.UIElements;
 
 //attach to healthPower prefab
 //determines if player collides and adds health before releasing object to pool
-public class HealthUpCollide : MonoBehaviour
+public class HealthUpCollide : PowerUp
 {
-    [SerializeField] private PowerUpFactory factory;
+    [SerializeField] protected CarHealthManager carHealth;
 
-    [SerializeField] private CarController car;
-    private float carSpeed;
-
-    [SerializeField] private CarHealthManager carHealth;
-
-    private bool isCollected = false;//makes sure powerup isn't triggered more than once per life
-
-    private void OnEnable()
-    {
-        isCollected = false;
+    protected override void PowerUp_OnCollisionEffects(Collider other){
+        carHealth.Repair(30); // We should make this a serialized field.
     }
 
-    private void Update()
-    {
-        //move powerup to look like car drives towards it
-        carSpeed = car.GetSpeed();
-        transform.Translate(new Vector3(0, 0, -(carSpeed * Time.deltaTime * 10)));
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //if car collides with powerup
-        if (!isCollected && other.CompareTag("Player"))
-        {
-            isCollected = true; //mark as used immediately
-
-            if (car != null)
-            {
-                //heal car
-                carHealth.Repair(30);
-            }
-
-            if (factory != null)
-            {
-                factory.ReleasePowerUp(gameObject);
-            }
-        }
-        //if powerup passes car it will eventually hit catcher and be released
-        if (other.CompareTag("ObjectCatcher"))
-        {
-            if (factory != null)
-            {
-                factory.ReleasePowerUp(gameObject);
-            }
+    public class HealthCollideFactory : PowerUpFactory{
+    public override SpawningEvent CreateSpawningEvent(Vector3 position,  Quaternion rotation){
+            HealthUpCollide self = base.pool.Get(PowerUp.PowerUpType.Health, position, rotation) as HealthUpCollide;
+            self.pool = base.pool;
+            return self;
         }
     }
 }
