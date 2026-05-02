@@ -17,8 +17,11 @@ public class BossCylinder : TestEvent {
         // Until we have actual boss prefabs, we'll allow this to spawn.
         
         public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-            BossCylinder self = (BossCylinder)_pool.Pool.Get(TestEvent.TestEventType.CYLINDER, position, rotation);
-            self.pool = _pool.Pool;
+            //BossCylinder self = (BossCylinder)_pool.Pool.Get(TestEvent.TestEventType.CYLINDER, position, rotation);
+            
+            // For ensuring that something gets created, but doesn't actually spawn.
+            var selfObj = new GameObject("BossCylinder");
+            var self = selfObj.AddComponent<BossCylinder>();
             return self;
         }
     }

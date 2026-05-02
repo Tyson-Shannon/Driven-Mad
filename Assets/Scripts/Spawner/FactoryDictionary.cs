@@ -2,19 +2,17 @@ using System;
 using System.Collections.Generic;
 
 public abstract class FactoryDictionary{
-  private int _factoryCount = 0;
-  private Dictionary<int, EventFactory> _factories = new Dictionary<int, EventFactory>();
+  private Dictionary<uint, EventFactory> _factories = new Dictionary<uint, EventFactory>();
 
-  public int GetFactoryCount(){ return _factoryCount; }
+  public uint GetFactoryCount(){ return (uint)_factories.Count; }
   
-  protected EventFactory SelectEventFactoryInternal(int randomSelection){
-    return _factories[randomSelection % _factories.Count];
+  protected EventFactory SelectEventFactoryInternal(uint randomSelection){
+    return _factories[randomSelection % (uint)_factories.Count];
   }
-  public abstract EventFactory SelectEventFactory(int randomSelection);
+  public abstract EventFactory SelectEventFactory(uint randomSelection);
 
   protected void AddEventFactoryInternal(EventFactory factory){
-    _factories[_factoryCount] = factory;
-    _factoryCount++;
+    _factories[(uint)_factories.Count] = factory;
   }
   public abstract void AddEventFactory(EventFactory factory);
   
@@ -43,7 +41,7 @@ public class PositiveFactoryDictionary : FactoryDictionary {
     return _instance;
   }
 
-  public override EventFactory SelectEventFactory(int randomSelection){
+  public override EventFactory SelectEventFactory(uint randomSelection){
     var factory = base.SelectEventFactoryInternal(randomSelection);
     if(!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryPositive<,>)))
       return null;
@@ -68,7 +66,7 @@ public class NegativeFactoryDictionary : FactoryDictionary {
     return _instance;
   }
 
-  public override EventFactory SelectEventFactory(int randomSelection){
+  public override EventFactory SelectEventFactory(uint randomSelection){
     var factory = base.SelectEventFactoryInternal(randomSelection);
     if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryNegative<,>)))
       return null;
@@ -92,7 +90,7 @@ public class BossFactoryDictionary : FactoryDictionary {
     return _instance;
   }
 
-  public override EventFactory SelectEventFactory(int randomSelection){
+  public override EventFactory SelectEventFactory(uint randomSelection){
     var factory = base.SelectEventFactoryInternal(randomSelection);
     if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryBoss<,>)))
       return null;
