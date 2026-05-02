@@ -2,7 +2,7 @@ using UnityEngine;
 
 #region NON_GENERIC_TYPE
 
-public abstract class EventFactory {
+public abstract class EventFactory { // Non-Generic for code simplicity.
   protected bool _registerFactory = true; // Will be skipped for all classes that are abstract.
 
   public bool ShouldRegister => _registerFactory;

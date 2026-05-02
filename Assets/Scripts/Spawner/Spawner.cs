@@ -85,6 +85,10 @@ public unsafe class Spawner : MonoBehaviour {
   public void ResumeSpawing(){
     _isRunning.isRunning = true;
   }
+
+  public void Move(Vector3 position){ // Allows something to move the spawner dynamically.
+    transform.position = position;
+  }
 }
 
 public class IsRunning {

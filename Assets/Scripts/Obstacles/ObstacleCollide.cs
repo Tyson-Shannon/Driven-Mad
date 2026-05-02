@@ -37,7 +37,7 @@ public class ObstacleCollide : SpawningEvent<ObstacleCollide, ObstacleCollide.Ob
     {
         //move obstacle to look like car drives towards it
         carSpeed = car.GetSpeed();
-        transform.Translate(new Vector3(0, 0, -(carSpeed * Time.deltaTime * 10)));
+        transform.Translate(new Vector3(0, 0, -(carSpeed * Time.deltaTime * 10)), Space.World);
     }
 
     protected override void OnCollisionEffects(Collider other){
@@ -54,19 +54,30 @@ public class ObstacleCollide : SpawningEvent<ObstacleCollide, ObstacleCollide.Ob
     }
 
     public class ObstacleCollideFactory : EventFactoryNegative<ObstacleCollide, ObstacleCollide.ObstacleType> {
-        private PgcSingleton _rng = PgcSingleton.CreatePgcSingleton();
+        private PgcSingleton _rng = PgcSingleton.CreatePgcSingleton(); // Because left and right have the same type
+        // (class, not enum), we can't assign a factory for each. Thus, we determine the type in the factory class.
 
         public ObstacleCollideFactory(){
             base.pool = ObstaclePool.CreateObstaclePool(10);
         }
 
         public override unsafe SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-            PrimitiveUnion roll = _rng.RandomPrimativeUnion();
-            ObstacleType prefabType = (roll._valueByte[0] < sbyte.MaxValue) 
-                ? ObstacleType.LeftPole 
-                : ObstacleType.RightPole;
+            PrimitiveUnion roll = _rng.RandomPrimativeUnion(); // Roll for a type.
+            float laneOffset = 8.5f; // Positions poles to the sides.
             
+            // Determine which pole we're making.
+            ObstacleType prefabType;
+            if (roll._valueByte[0] < sbyte.MaxValue) {
+                prefabType = ObstacleType.LeftPole;
+                laneOffset *= -1;
+            }
+            else {
+                prefabType = ObstacleType.RightPole;
+            }
+
             ObstacleCollide obstacle = base.pool.Get(prefabType, position, rotation);
+            obstacle.transform.position = new Vector3(position.x + laneOffset, position.y, position.z); // Give the object
+            // An offset from the spawner.
             obstacle.SetupObstacleFactory();
             
             return obstacle;

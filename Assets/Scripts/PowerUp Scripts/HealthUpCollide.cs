@@ -12,10 +12,10 @@ public class HealthUpCollide : PowerUp
     [SerializeField] protected CarHealthManager carHealth;
 
     public override void AttachSceneObjects(){
-        base.AttachSceneObjects();
+        base.AttachSceneObjects(); // Need to attach the car.
         
         if (carHealth == null) {
-            carHealth = FindObjectOfType<CarHealthManager>();
+            carHealth = FindObjectOfType<CarHealthManager>(); // Also need to attach the CarHealthManager.
         }
     }
 
@@ -24,10 +24,10 @@ public class HealthUpCollide : PowerUp
     }
 
     public class HealthCollideFactory : PowerUpFactory{
-    public override SpawningEvent CreateSpawningEvent(Vector3 position,  Quaternion rotation){
-            var self = (HealthUpCollide)base.pool.Get(PowerUp.PowerUpType.Health, position, rotation);
-            self.pool = base.pool;
-            return self;
+        public override SpawningEvent CreateSpawningEvent(Vector3 position,  Quaternion rotation){
+            var self = (HealthUpCollide)base.pool.Get(PowerUp.PowerUpType.Health, position, rotation); // Get the object
+            self.pool = base.pool; // Give the object its pool.
+            return self; // Return the object
         }
     }
 }
