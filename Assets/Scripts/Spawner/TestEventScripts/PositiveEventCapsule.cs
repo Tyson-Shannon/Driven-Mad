@@ -1,6 +1,9 @@
 using UnityEngine;
 
 public class PositiveEventCapsule : TestEvent{
+  public override void AttachSceneObjects(){
+    return;
+  }
   // Do whatever you want here: this is whatever you happen to be spawning.
   
   public class PositiveEventCapsuleFactory : EventFactoryPositive<TestEvent, TestEvent.TestEventType> {
@@ -17,7 +20,8 @@ public class PositiveEventCapsule : TestEvent{
     }
 
     public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-      PositiveEventCapsule self = _pool.Pool.Get(TestEvent.TestEventType.CAPSULE, position, rotation) as PositiveEventCapsule;
+      PositiveEventCapsule self =
+        (PositiveEventCapsule)_pool.Pool.Get(TestEvent.TestEventType.CAPSULE, position, rotation);
       self.pool = _pool.Pool;
       return self;
     }

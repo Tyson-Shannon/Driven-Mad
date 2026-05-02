@@ -8,10 +8,11 @@ public class SpawnerTestPool : Pool<TestEvent, TestEvent.TestEventType> {
   private Stack<TestEvent> bossPool = new Stack<TestEvent>();
   
   protected override string ResolvePath(TestEvent.TestEventType type){
+    const string prefix = "Prefab/TestObjects/";
     switch (type) {
-      case TestEvent.TestEventType.CAPSULE: return "Prefab/TestObject/PositiveEventCapsule";
-      case TestEvent.TestEventType.CUBE: return "Prefab/TestObject/NegativeEventCube";
-      case TestEvent.TestEventType.CYLINDER: return "Prefab/TestObject/BossCylinder";
+      case TestEvent.TestEventType.CAPSULE: return prefix + "PositiveEventCapsule";
+      case TestEvent.TestEventType.CUBE: return prefix + "NegativeEventCube";
+      case TestEvent.TestEventType.CYLINDER: return prefix + "BossCylinder";
     }
     return null;
   }

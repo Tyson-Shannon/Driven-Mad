@@ -1,88 +1,106 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class FactoryDictionary<T, U> 
-    where T : SpawningEvent
-    where U : System.Enum {
+public abstract class FactoryDictionary{
   private int _factoryCount = 0;
-  private Dictionary<int, EventFactory<T, U>> _factories = new Dictionary<int, EventFactory<T, U>>();
+  private Dictionary<int, EventFactory> _factories = new Dictionary<int, EventFactory>();
 
   public int GetFactoryCount(){ return _factoryCount; }
   
-  protected EventFactory<T, U> SelectEventFactoryInternal(int randomSelection){
+  protected EventFactory SelectEventFactoryInternal(int randomSelection){
     return _factories[randomSelection % _factories.Count];
   }
-  public abstract EventFactory<T, U> SelectEventFactory(int randomSelection);
+  public abstract EventFactory SelectEventFactory(int randomSelection);
 
-  protected void AddEventFactoryInternal(EventFactory<T, U> factory){
+  protected void AddEventFactoryInternal(EventFactory factory){
     _factories[_factoryCount] = factory;
     _factoryCount++;
   }
-  public abstract void AddEventFactory(EventFactory<T, U> factory);
+  public abstract void AddEventFactory(EventFactory factory);
+  
+  protected static bool IsFactoryCorrect(Type type, Type openFactory){
+    while (type != null && type != openFactory) {
+      if (
+        type.IsGenericType
+        && type.GetGenericTypeDefinition() == openFactory
+      ) return true;
+      
+      type = type.BaseType;
+    }
+    
+    return false;
+  }
 }
 
-public class PositiveFactoryDictionary<T, U> : FactoryDictionary<T, U> 
-  where T : SpawningEvent<T, U>
-  where U : System.Enum {
-  private static PositiveFactoryDictionary<T, U> _instance;
+public class PositiveFactoryDictionary : FactoryDictionary {
+  private static PositiveFactoryDictionary _instance;
   
   private PositiveFactoryDictionary(){}
-  public static PositiveFactoryDictionary<T, U> CreatePositiveFactoryDictionary(){
+  public static PositiveFactoryDictionary CreatePositiveFactoryDictionary(){
     if (_instance == null) {
-      _instance = new PositiveFactoryDictionary<T, U>();
+      _instance = new PositiveFactoryDictionary();
     }
     return _instance;
   }
 
-  public override EventFactory<T, U> SelectEventFactory(int randomSelection){
-    return SelectEventFactoryInternal(randomSelection) as EventFactoryPositive<T, U>;
+  public override EventFactory SelectEventFactory(int randomSelection){
+    var factory = base.SelectEventFactoryInternal(randomSelection);
+    if(!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryPositive<,>)))
+      return null;
+    return factory;
   }
 
-  public override void AddEventFactory(EventFactory<T, U> factory){
-    AddEventFactoryInternal(factory as EventFactoryPositive<T, U>);
+  public override void AddEventFactory(EventFactory factory){
+    if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryPositive<,>))) return;
+    base.AddEventFactoryInternal(factory);
   }
+
 }
 
-public class NegativeFactoryDictionary<T, U> : FactoryDictionary<T, U> 
-    where T : SpawningEvent<T, U>
-    where U : System.Enum {
-  private static NegativeFactoryDictionary<T, U> _instance;
+public class NegativeFactoryDictionary : FactoryDictionary {
+  private static NegativeFactoryDictionary _instance;
 
   private NegativeFactoryDictionary(){}
-  public static NegativeFactoryDictionary<T, U> CreateNegativeFactoryDictionary(){
+  public static NegativeFactoryDictionary CreateNegativeFactoryDictionary(){
     if (_instance == null) {
-      _instance = new NegativeFactoryDictionary<T, U>();
+      _instance = new NegativeFactoryDictionary();
     }
     return _instance;
   }
 
-  public override EventFactory<T, U> SelectEventFactory(int randomSelection){
-    return SelectEventFactoryInternal(randomSelection) as EventFactoryNegative<T, U>;
+  public override EventFactory SelectEventFactory(int randomSelection){
+    var factory = base.SelectEventFactoryInternal(randomSelection);
+    if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryNegative<,>)))
+      return null;
+    return factory;
   }
 
-  public override void AddEventFactory(EventFactory<T, U> factory){
-    AddEventFactoryInternal(factory as EventFactoryNegative<T, U>);
+  public override void AddEventFactory(EventFactory factory){
+    if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryNegative<,>))) return;
+    base.AddEventFactoryInternal(factory);
   }
 }
 
-public class BossFactoryDictionary<T, U> : FactoryDictionary<T, U> 
-    where T : SpawningEvent<T, U>
-    where U : System.Enum {
-  private static BossFactoryDictionary<T, U> _instance;
+public class BossFactoryDictionary : FactoryDictionary {
+  private static BossFactoryDictionary _instance;
 
   private BossFactoryDictionary(){}
-  public static BossFactoryDictionary<T, U> CreateBossFactoryDictionary(){
+  public static BossFactoryDictionary CreateBossFactoryDictionary(){
     if (_instance == null) {
-      _instance = new BossFactoryDictionary<T, U>();
+      _instance = new BossFactoryDictionary();
     }
     return _instance;
   }
 
-  public override EventFactory<T, U> SelectEventFactory(int randomSelection){
-    return SelectEventFactoryInternal(randomSelection) as EventFactoryBoss<T, U>;
+  public override EventFactory SelectEventFactory(int randomSelection){
+    var factory = base.SelectEventFactoryInternal(randomSelection);
+    if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryBoss<,>)))
+      return null;
+    return factory;
   }
 
-  public override void AddEventFactory(EventFactory<T, U> factory){
-    AddEventFactoryInternal(factory as EventFactoryBoss<T, U>);
+  public override void AddEventFactory(EventFactory factory){
+    if (!FactoryDictionary.IsFactoryCorrect(factory.GetType(), typeof(EventFactoryBoss<,>))) return;
+    AddEventFactoryInternal(factory);
   }
 }

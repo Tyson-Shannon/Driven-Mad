@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class EventFactory {
   protected bool _registerFactory = true; // Will be skipped for all classes that are abstract.
-  
+
+  public bool ShouldRegister => _registerFactory;
+
   public abstract SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation);
 }
 #endregion NON_GENERIC_TYPE
@@ -30,7 +32,7 @@ public abstract class EventFactoryNegative<T, U> : EventFactory<T, U>
 }
 
 public abstract class EventFactoryBoss<T, U> : EventFactory<T, U> 
-  where T : SpawningEven
+  where T : SpawningEvent
   where U : System.Enum {
 }
 #endregion CHILD_CLASSES

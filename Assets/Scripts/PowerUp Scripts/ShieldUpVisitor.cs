@@ -27,8 +27,7 @@ public class ShieldPowerUp : PowerUp, IPowerUpVisitor
 
     public class ShieldUpVisitorFactory : PowerUpFactory {
         public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-            ShieldPowerUp self = 
-                base.pool.Get(PowerUp.PowerUpType.Shield, position, rotation) as ShieldPowerUp;
+            var self = (ShieldPowerUp)base.pool.Get(PowerUp.PowerUpType.Shield, position, rotation);
             self.pool = base.pool;
             return self;
         }

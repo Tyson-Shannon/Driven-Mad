@@ -15,6 +15,11 @@ public abstract class Pool<T, U>: MonoBehaviour
   private void AddPool(U type){
     Stack<T> pool = this.ResolvePool(type);
     T prefab = Resources.Load<T>(this.ResolvePath(type));
+
+    //if (prefab == null) {
+    //  Debug.LogError($"Could not find prefab {this.ResolvePath(type)}");
+    //  return;
+    //}
       
     pool.Push(prefab);
   }
@@ -39,17 +44,20 @@ public abstract class Pool<T, U>: MonoBehaviour
   }
 
   public T Get(U type, Vector3 position, Quaternion rotation){
-    T prefab = this.GetPrefab(type);
-    return Instantiate(prefab, position, rotation);
+    T fromPool = this.GetPrefab(type);
+    T prefab = Instantiate(fromPool, position, fromPool.transform.rotation);
+    prefab.AttachSceneObjects();
+    prefab.gameObject.SetActive(true);
+    return prefab;
   }
 
-  public void Release(T monoBehavior){
-    Stack<T> pool = this.ResolvePool(monoBehavior.type);
+  public void Release(T spawningEvent){
+    Stack<T> pool = this.ResolvePool((U)spawningEvent.EventType);
     if (pool.Count < poolMax) {
-      pool.Push(monoBehavior);
+      pool.Push(spawningEvent);
     }
     
-    monoBehavior.gameObject.SetActive(false);
+    spawningEvent.gameObject.SetActive(false);
   }
 
   protected static void CreatePool(Pool<T, U> pool, int poolMax){

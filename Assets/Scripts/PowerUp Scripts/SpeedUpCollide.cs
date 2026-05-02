@@ -17,9 +17,7 @@ public class SpeedUpCollide : PowerUp
 
     public class SpeedUpCollideFactory : PowerUpFactory {
         public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-            SpeedUpCollide self =
-                base.pool.Get(PowerUp.PowerUpType.Speed, position, rotation)
-                as SpeedUpCollide;
+            var self = (SpeedUpCollide)base.pool.Get(PowerUp.PowerUpType.Speed, position, rotation);
             self.pool = base.pool;
             return self;
         }

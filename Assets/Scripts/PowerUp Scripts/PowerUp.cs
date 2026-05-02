@@ -7,6 +7,12 @@ public abstract class PowerUp : SpawningEvent<PowerUp, PowerUp.PowerUpType> {
   protected float carSpeed;
   private bool isCollected;
 
+  public override void AttachSceneObjects(){
+    if (car == null) {
+      car = FindObjectOfType<CarController>();
+    }
+  }
+
   public enum PowerUpType {
     Health,
     Speed,

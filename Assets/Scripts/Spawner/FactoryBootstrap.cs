@@ -18,17 +18,17 @@ public static class FactoryBootstrap {
 
         FactoryBootstrap.RegisterFactories( // Register all factories descended from Positive
             typeof(EventFactoryPositive<,>),
-            typeof(PositiveFactoryDictionary<,>)
+            typeof(PositiveFactoryDictionary)
         );
 
         FactoryBootstrap.RegisterFactories( // Register all factories descended from Negative
             typeof(EventFactoryNegative<,>),
-            typeof(NegativeFactoryDictionary<,>)
+            typeof(NegativeFactoryDictionary)
         );
 
         FactoryBootstrap.RegisterFactories( // Register all factories descended from Boss
             typeof(EventFactoryBoss<,>),
-            typeof(BossFactoryDictionary<,>)
+            typeof(BossFactoryDictionary)
         );
 
         Debug.Log("BOOTSTRAP COMPLETE");
@@ -157,7 +157,7 @@ public static class FactoryBootstrap {
             // Step 5: Close the dictionary type with the same <T, U>.
             // Example:
             //   PositiveFactoryDictionary<,> -> PositiveFactoryDictionary<HealthPickupEvent, PickupType>
-            Type closedDictionaryType = openDictionaryType.MakeGenericType(eventType, enumType);
+            Type closedDictionaryType = openDictionaryType; // Leftover from when this was supposed to be generic.
 
             // Step 6: Find the static "Create..." method (singleton accessor).
             // This is your manual singleton pattern.

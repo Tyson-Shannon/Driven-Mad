@@ -1,12 +1,11 @@
 public class EventFactorySelector {
-  public bool _isBoss = false; // This is to be set from external contexts, and does not belong to the class. Do not write to this.
-  
+  public bool _isBoss = false; // This is to be set from external contexts, and does not belong to the class<SpawningEvent, System.Enum>. Do not write to this.
   // We reroll every time we wish to reset.
   private PgcSingleton _prng;
   private PrimitiveUnion _roll;
 
   // We return a factory by pulling it from its dictionary.
-  private PositiveFactoryDictionary<SpawningEvent, System.Enum> _positive;
+  private PositiveFactoryDictionary _positive;
   private NegativeFactoryDictionary _negative;
   private BossFactoryDictionary _boss;
   

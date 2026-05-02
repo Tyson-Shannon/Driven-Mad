@@ -12,7 +12,7 @@ public class ObstaclePool : Pool<ObstacleCollide, ObstacleCollide.ObstacleType>
     private readonly Stack<ObstacleCollide> poolRight = new Stack<ObstacleCollide>();
     
     protected override string ResolvePath(ObstacleCollide.ObstacleType type){
-        const string prefix = "Obstacle/";
+        const string prefix = "Prefab/Obstacles/";
         switch (type) {
             case ObstacleCollide.ObstacleType.LeftPole: return prefix + "leftPole";
             case ObstacleCollide.ObstacleType.RightPole: return prefix + "rightPole";

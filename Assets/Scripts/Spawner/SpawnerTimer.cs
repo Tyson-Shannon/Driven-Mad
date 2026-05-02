@@ -7,14 +7,14 @@ public unsafe class SpawnerTimer : MonoBehaviour {
   private float _bossTimeElapsed = 0;
   private float _nonBossTimeElapsed = 0;
 
-  private bool* _isRunning;
+  private IsRunning _isRunning;
   
   private bool _spawnBoss = false;
   public bool SpawnBoss => _spawnBoss;
   private bool _spawnNonBoss = false;
   public bool SpawnNonBoss => _spawnNonBoss;
 
-  public static SpawnerTimer CreateSpawnerTimer(float bossTime, float nonBossTime, bool* isRunning){
+  public static SpawnerTimer CreateSpawnerTimer(float bossTime, float nonBossTime, IsRunning isRunning){
     var spawnerTimerObj = new GameObject("SpawnerTimer");
     var self =  spawnerTimerObj.AddComponent<SpawnerTimer>();
 
@@ -48,7 +48,7 @@ public unsafe class SpawnerTimer : MonoBehaviour {
   
   public void Update(){
     // Make sure we don't run if we're not supposed to be running.
-    if (!*_isRunning) {
+    if (!_isRunning.isRunning) {
       Reset();
       return;
     }

@@ -35,7 +35,7 @@ public abstract class TestEvent : SpawningEvent<TestEvent, TestEvent.TestEventTy
     }
     
     public override SpawningEvent CreateSpawningEvent(Vector3 position, Quaternion rotation){
-      Debug.Log("TestFactoryPool isn't supposed to get instantiated");
+      //Debug.Log("TestFactoryPool isn't supposed to get instantiated");
       return null;
     }
   }

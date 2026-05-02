@@ -8,8 +8,8 @@ public unsafe class Spawner : MonoBehaviour {
   private SpawnerTimer _timer;
 
   // We decide how long the wait should be from the inspector. Then, the timer has to respect that.
-  [SerializeField] private float _regularEventTiming;
-  [SerializeField] private float _bossEventTimingFactor;
+  [SerializeField, Min(.01f)] private float _regularEventTiming;
+  [SerializeField, Min(.01f)] private float _bossEventTimingFactor;
   private float _bossEventTiming;
 
   public float SetRegularEventTiming {
@@ -22,7 +22,8 @@ public unsafe class Spawner : MonoBehaviour {
     }
   }
 
-  [SerializeField] private bool* _isRunning; // We want the timer to see this by reference, and ref doesn't exist in 
+  [SerializeField] private bool _isRunningChoice; // We want the timer to see this by reference, and ref doesn't exist in 
+  private IsRunning _isRunning = new IsRunning();
   // .net 7 (limitation of Unity).
 
   #region CONSTRUCTORS
@@ -35,6 +36,7 @@ public unsafe class Spawner : MonoBehaviour {
     roll._valueByte[0] = Byte.MaxValue / 2;
     
     // Set up the timer.
+    _isRunning.isRunning = true;
     _timer = SpawnerTimer.CreateSpawnerTimer(_bossEventTiming, _regularEventTiming, _isRunning);
     
     // Make sure that the factory selector is now created.
@@ -43,7 +45,7 @@ public unsafe class Spawner : MonoBehaviour {
   #endregion CONSTRUCTORS
 
   public unsafe void Update(){
-    if (!*_isRunning) return;
+    if (!_isRunning.isRunning) return;
     
     var spawningConditions = new PrimitiveUnion(); // We're using parameters to be extra sure that it starts at 0.
     spawningConditions._valueBool[0] = _timer.SpawnBoss; // 1:
@@ -77,10 +79,16 @@ public unsafe class Spawner : MonoBehaviour {
   }
 
   public void StopSpawing(){
+    _isRunning.isRunning = false;
   }
 
   public void ResumeSpawing(){
+    _isRunning.isRunning = true;
   }
+}
+
+public class IsRunning {
+  public bool isRunning;
 }
 
 [Flags]

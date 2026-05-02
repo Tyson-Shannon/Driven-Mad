@@ -11,13 +11,21 @@ public class HealthUpCollide : PowerUp
 {
     [SerializeField] protected CarHealthManager carHealth;
 
+    public override void AttachSceneObjects(){
+        base.AttachSceneObjects();
+        
+        if (carHealth == null) {
+            carHealth = FindObjectOfType<CarHealthManager>();
+        }
+    }
+
     protected override void PowerUp_OnCollisionEffects(Collider other){
         carHealth.Repair(30); // We should make this a serialized field.
     }
 
     public class HealthCollideFactory : PowerUpFactory{
     public override SpawningEvent CreateSpawningEvent(Vector3 position,  Quaternion rotation){
-            HealthUpCollide self = base.pool.Get(PowerUp.PowerUpType.Health, position, rotation) as HealthUpCollide;
+            var self = (HealthUpCollide)base.pool.Get(PowerUp.PowerUpType.Health, position, rotation);
             self.pool = base.pool;
             return self;
         }
