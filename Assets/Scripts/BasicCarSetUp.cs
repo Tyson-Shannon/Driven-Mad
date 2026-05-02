@@ -22,9 +22,5 @@ public class BasicCarSetUp : MonoBehaviour
         }
     }
 
-    //Barry
-    void Start()
-    {
-        ScoreManager.Instance.SetCarType("MuscleCar"); // change name per car
-    }
+   
 }

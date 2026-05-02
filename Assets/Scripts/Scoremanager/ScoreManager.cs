@@ -1,22 +1,22 @@
 //Thierno Barry 04/14/2026 Singleton Pattern
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class ScoreManager : MonoBehaviour
 {
+
+    //Event manager 
+    public static event Action<int> OnScoreChanged;
     // Current run
     private float currentDistance;
     private int zombiesKilled;
     private float offRoadDistance;
     private string currentCarType;
-
     // High scores (per car)
     private float bestDistance;
     private int bestScore;
 
     public static ScoreManager Instance { get; private set; }
-
-
 
     public void SetCarType(string carType)
     {
@@ -34,10 +34,8 @@ public class ScoreManager : MonoBehaviour
     {
         if (currentDistance > bestDistance)
             PlayerPrefs.SetFloat(currentCarType + "_BestDistance", currentDistance);
-
         if (CalculateScore() > bestScore)
             PlayerPrefs.SetInt(currentCarType + "_BestScore", CalculateScore());
-
         PlayerPrefs.Save();
     }
 
@@ -46,20 +44,22 @@ public class ScoreManager : MonoBehaviour
         currentDistance += distance;
         if (!isOnRoad)
             offRoadDistance += distance;
+        OnScoreChanged?.Invoke(CalculateScore()); // notify HUD
+        Debug.Log("CarType: " + currentCarType + " Distance: " + currentDistance + " Score: " + CalculateScore());
     }
 
     public int CalculateScore()
     {
-        int distanceScore = (int)(currentDistance * 10);
-        int zombieScore = zombiesKilled * 50; // placeholder until Simon is done
-        int offRoadPenalty = (int)(offRoadDistance * 5); // penalty for going off road
-
+        int distanceScore = (int)(currentDistance * 100);
+        int zombieScore = zombiesKilled * 50;
+        int offRoadPenalty = (int)(offRoadDistance * 5);
         return distanceScore + zombieScore - offRoadPenalty;
     }
 
     public void AddZombieKill()
     {
-        zombiesKilled += 1;
+        zombiesKilled++;
+        OnScoreChanged?.Invoke(CalculateScore()); // notify HUD
     }
 
     public void ResetRun()
@@ -69,6 +69,11 @@ public class ScoreManager : MonoBehaviour
         offRoadDistance = 0;
     }
 
+    // Getters for HUD
+    public int GetCurrentScore() => CalculateScore();
+    public float GetCurrentDistance() => currentDistance;
+    public float GetBestDistance() => bestDistance;
+    public int GetBestScore() => bestScore;
 
     void Awake()
     {
@@ -82,6 +87,4 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-  
 }

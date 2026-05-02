@@ -39,21 +39,25 @@ public class CarHealthManager : MonoBehaviour
         if (GetComponent<BasicCarSetUp>() != null)
         {
             healthSystem = new StandardHealth(100);
+            ScoreManager.Instance.SetCarType("BasicCar");
             Debug.Log("BasicCar initialized - 100 HP, normal damage");
         }
         else if (GetComponent<MuscleCarSetUp>() != null)
         {
             healthSystem = new ArmoredHealth(75);
+            ScoreManager.Instance.SetCarType("MuscleCar");
             Debug.Log("MuscleCar initialized - 75 HP, 50% damage reduction");
         }
         else if (GetComponent<SemiTruckSetUp>() != null)
         {
             healthSystem = new ArmoredHealth(150);
+            ScoreManager.Instance.SetCarType("SemiTruck");
             Debug.Log("SemiTruck initialized - 150 HP, 50% damage reduction");
         }
         else if (GetComponent<VanSetUp>() != null)
         {
             healthSystem = new VanCarHealth(110);
+            ScoreManager.Instance.SetCarType("Van");
             Debug.Log("Van initialized - 110 HP, normal damage");
         }
         else
