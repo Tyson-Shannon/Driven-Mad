@@ -6,6 +6,7 @@ public class ScoreHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentScoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
     [SerializeField] private TextMeshProUGUI bestDistanceText;
+    [SerializeField] private TextMeshProUGUI distanceText; // DistanceText from Canvas
 
     void OnEnable()
     {
@@ -21,6 +22,11 @@ public class ScoreHUD : MonoBehaviour
     {
         bestScoreText.text = "Best Score: " + ScoreManager.Instance.GetBestScore();
         bestDistanceText.text = "Best: " + ScoreManager.Instance.GetBestDistance().ToString("F1") + " Miles";
+    }
+
+    void Update()
+    {
+        distanceText.text = ScoreManager.Instance.GetCurrentDistance().ToString("F1") + " Miles";
     }
 
     void UpdateScoreUI(int currentScore)
