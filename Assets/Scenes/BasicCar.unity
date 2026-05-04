@@ -1593,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: healthPower
       objectReference: {fileID: 0}
+    - target: {fileID: 1668039030227442335, guid: 62bde97e718bd964c9a0c32451508407, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2818095043298166093, guid: 62bde97e718bd964c9a0c32451508407, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.51
@@ -1836,6 +1840,10 @@ PrefabInstance:
     - target: {fileID: 2304756967030160029, guid: 680f9d2b07c0a004dafe8643ff11a120, type: 3}
       propertyPath: m_Name
       value: shieldPower
+      objectReference: {fileID: 0}
+    - target: {fileID: 2304756967030160029, guid: 680f9d2b07c0a004dafe8643ff11a120, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7090284444143624100, guid: 680f9d2b07c0a004dafe8643ff11a120, type: 3}
       propertyPath: m_LocalPosition.x
