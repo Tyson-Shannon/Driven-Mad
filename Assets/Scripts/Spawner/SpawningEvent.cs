@@ -16,7 +16,7 @@ public abstract class SpawningEvent<T, U> : SpawningEvent
   public sealed override System.Enum EventType => type;
   
   private void Despawn(){
-    pool.Release(this as T);
+    pool.Release((T)(object)this);
   }
   
   protected static void CreateAbstractSpawningEvent(SpawningEvent<T, U> spawnableEvent, U type){ // Used in constructors.
@@ -25,6 +25,7 @@ public abstract class SpawningEvent<T, U> : SpawningEvent
 
   private void OnTriggerEnter(Collider other){
      if (other.CompareTag("ObjectCatcher")) { // Did the object hit the object catcher?
+       Debug.Log("ObjectCatcher hit: " + this.gameObject.name);
        this.Despawn();
        return;
      }

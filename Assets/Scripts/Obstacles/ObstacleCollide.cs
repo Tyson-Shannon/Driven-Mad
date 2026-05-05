@@ -79,6 +79,7 @@ public class ObstacleCollide : SpawningEvent<ObstacleCollide, ObstacleCollide.Ob
             obstacle.transform.position = new Vector3(position.x + laneOffset, position.y, position.z); // Give the object
             // An offset from the spawner.
             obstacle.SetupObstacleFactory();
+            obstacle.pool = this.pool;
             
             return obstacle;
         }

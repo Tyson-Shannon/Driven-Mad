@@ -31,7 +31,7 @@ public class EventFactorySelector {
   }
 
   public unsafe EventFactory SelectEventFactory(byte difficultyAdjust=0){
-    int randomSelection = _roll._sValue32[1];
+    uint randomSelection = _roll._value32[1];
     FactoryDictionary factoryDict;
     if (_isBoss) {
       factoryDict = _boss;
