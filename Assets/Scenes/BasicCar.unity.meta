@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/BasicCar.unity.meta
 guid: 639e646fb1f476146860a5fc54003776
 DefaultImporter:
+========
+guid: b05b7dafc37e01a89b5e8fc1f9046c2c
+PrefabImporter:
+>>>>>>>> 213f798 (WIP local recovery before sync):Assets/Resources/prefabs/nate/BossCylinder.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
