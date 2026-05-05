@@ -934,6 +934,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadSceneByName
       objectReference: {fileID: 0}
+    - target: {fileID: 2780949493851027114, guid: 42f127aa4230b8140b296f15102078ab, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2956597556645512687, guid: 42f127aa4230b8140b296f15102078ab, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8529079771722946789, guid: 42f127aa4230b8140b296f15102078ab, type: 3}
       propertyPath: m_Name
       value: Canvas

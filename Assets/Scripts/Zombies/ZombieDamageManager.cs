@@ -7,6 +7,9 @@ public class ZombieDamageManager : MonoBehaviour
 {
     [SerializeField] private Transform[] attachPoints;
     [SerializeField] private CarHealthManager carHealthManager;
+    [SerializeField] private bool enableDemoKillKey = true;
+    [SerializeField] private KeyCode demoKillKey = KeyCode.K;
+    [SerializeField] private int demoKillDamage = 999;
 
     private readonly Dictionary<Transform, ZombieAttacher> occupiedPoints = new Dictionary<Transform, ZombieAttacher>();
     private readonly Dictionary<ZombieAttacher, Transform> zombiePoints = new Dictionary<ZombieAttacher, Transform>();
@@ -26,6 +29,15 @@ public class ZombieDamageManager : MonoBehaviour
         if (carHealthManager == null)
         {
             carHealthManager = GetComponentInChildren<CarHealthManager>();
+        }
+    }
+
+    private void Update()
+    {
+        if (enableDemoKillKey && Input.GetKeyDown(demoKillKey))
+        {
+            Debug.Log($"[Zombie Demo] {demoKillKey} pressed. Damaging attached zombies.");
+            DamageAttachedZombies(demoKillDamage);
         }
     }
 

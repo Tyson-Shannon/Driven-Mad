@@ -11,6 +11,9 @@ public class ZombieAttacher : MonoBehaviour
     [SerializeField] private float damageInterval = 2f;
     [SerializeField] private float roamSpeed = 1f;
     [SerializeField] private float detectRange = 8f;
+    [SerializeField] private int obstacleCollisionDamage = 34;
+    [SerializeField] private float obstacleCheckRadius = 1f;
+    [SerializeField] private bool debugObstacleDamage = true;
 
     [Header("Road Movement")]
     [SerializeField] private bool useCarSpeedForRoadMovement = true;
@@ -31,6 +34,7 @@ public class ZombieAttacher : MonoBehaviour
     private ZombiePool owningPool;
     private IZombieState currentState;
     private bool isDead;
+    private ObstacleCollide lastObstacleHit;
 
     public ZombieType Type => zombieType;
     public bool IsAttached => currentCar != null && currentAnchor != null;
@@ -74,11 +78,17 @@ public class ZombieAttacher : MonoBehaviour
         if (IsAttached)
         {
             FollowAttachPoint();
+            CheckObstacleOverlap();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (TryTakeObstacleDamage(collision.collider))
+        {
+            return;
+        }
+
         currentState?.HandleCollision(this, collision);
     }
 
@@ -89,11 +99,21 @@ public class ZombieAttacher : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (TryTakeObstacleDamage(other))
+        {
+            return;
+        }
+
         TryAttachFromCollider(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
+        if (TryTakeObstacleDamage(other))
+        {
+            return;
+        }
+
         TryAttachFromCollider(other);
     }
 
@@ -381,7 +401,50 @@ public class ZombieAttacher : MonoBehaviour
 
         if (zombieCollider != null)
         {
-            zombieCollider.enabled = enabled;
+            zombieCollider.enabled = true;
+        }
+    }
+
+    private bool TryTakeObstacleDamage(Collider other)
+    {
+        ObstacleCollide obstacle = other != null ? other.GetComponentInParent<ObstacleCollide>() : null;
+        if (isDead || obstacle == null || obstacle == lastObstacleHit)
+        {
+            return false;
+        }
+
+        lastObstacleHit = obstacle;
+
+        if (debugObstacleDamage)
+        {
+            Debug.Log($"[Zombie Obstacle] {name} hit {other.name}. HP before: {currentHP}, damage: {obstacleCollisionDamage}");
+        }
+
+        TakeDamage(obstacleCollisionDamage);
+        return true;
+    }
+
+    private void CheckObstacleOverlap()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, obstacleCheckRadius);
+        bool touchingObstacle = false;
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i] != null && hits[i].GetComponentInParent<ObstacleCollide>() != null)
+            {
+                touchingObstacle = true;
+            }
+
+            if (TryTakeObstacleDamage(hits[i]))
+            {
+                return;
+            }
+        }
+
+        if (!touchingObstacle)
+        {
+            lastObstacleHit = null;
         }
     }
 

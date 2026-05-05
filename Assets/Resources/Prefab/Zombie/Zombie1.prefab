@@ -2186,6 +2186,9 @@ MonoBehaviour:
   damageInterval: 2
   roamSpeed: 1
   detectRange: 8
+  obstacleCollisionDamage: 34
+  obstacleCheckRadius: 1
+  debugObstacleDamage: 1
   useCarSpeedForRoadMovement: 1
   roadSpeedMultiplier: 10
   extraZombieSpeed: 0
