@@ -45,7 +45,7 @@ public class ScoreManager : MonoBehaviour
         if (!isOnRoad)
             offRoadDistance += distance;
         OnScoreChanged?.Invoke(CalculateScore()); // notify HUD
-        Debug.Log("CarType: " + currentCarType + " Distance: " + currentDistance + " Score: " + CalculateScore());
+        //Debug.Log("CarType: " + currentCarType + " Distance: " + currentDistance + " Score: " + CalculateScore());
     }
 
     public int CalculateScore()

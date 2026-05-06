@@ -21,12 +21,12 @@ public class ScoreHUD : MonoBehaviour
     void Start()
     {
         bestScoreText.text = "Best Score: " + ScoreManager.Instance.GetBestScore();
-        bestDistanceText.text = "Best: " + ScoreManager.Instance.GetBestDistance().ToString("F1") + " Miles";
+        bestDistanceText.text = "Best: " + (ScoreManager.Instance.GetBestDistance() /1000).ToString("F1") + " Miles";
     }
 
     void Update()
-    {
-        distanceText.text = ScoreManager.Instance.GetCurrentDistance().ToString("F1") + " Miles";
+    { 
+        distanceText.text = (ScoreManager.Instance.GetCurrentDistance() / 1000f).ToString("F1") + " Miles";
     }
 
     void UpdateScoreUI(int currentScore)

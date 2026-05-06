@@ -32,7 +32,7 @@ public class GameOverUI : MonoBehaviour
             ScoreManager.Instance.SaveHighScore();
             finalScoreText.text = "Score: " + ScoreManager.Instance.GetCurrentScore();
             bestScoreText.text = "Best: " + ScoreManager.Instance.GetBestScore();
-            finalDistanceText.text = "Distance: " + ScoreManager.Instance.GetCurrentDistance().ToString("F1");
+            finalDistanceText.text = "Distance: " + (ScoreManager.Instance.GetCurrentDistance()/1000f).ToString("F1");
         }
         gameOverPanel.SetActive(true);
     }
